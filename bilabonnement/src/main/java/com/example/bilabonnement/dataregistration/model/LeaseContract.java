@@ -1,4 +1,4 @@
-package com.example.bilabonnement.Model;
+package com.example.bilabonnement.dataregistration.model;
 
 import java.util.Date;
 
