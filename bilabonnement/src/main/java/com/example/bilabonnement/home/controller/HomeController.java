@@ -18,4 +18,9 @@ public class HomeController {
         return "home/index"; //eller noget...
     }
 
+    @GetMapping("/dataregistrering")
+    public String dataregistrering() {
+        return"dataregistrering";
+    }
+
 }
