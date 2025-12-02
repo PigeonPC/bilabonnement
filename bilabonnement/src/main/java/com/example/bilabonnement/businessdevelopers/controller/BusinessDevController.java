@@ -1,15 +1,30 @@
 package com.example.bilabonnement.businessdevelopers.controller;
 
+import com.example.bilabonnement.businessdevelopers.model.BusinessDevDashboard;
+import com.example.bilabonnement.businessdevelopers.service.BusinessDevService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class BusinessDevController {
-    @GetMapping("/businessdevelopers")
-    public String businessdevelopers(Model model) {
-        model.addAttribute("activePage", "businessdevelopers");
-        return "businessdevelopers";
-    }
-}
 
+    @Autowired
+    BusinessDevService devService;
+
+    @GetMapping("/businessdevelopers")
+    public String showDashboard(Model model){
+
+        //hent data fra service:
+        BusinessDevDashboard dashboard = devService.getDashboard();
+
+        //"gør dashboard-objektet tilgængeligt i Thymeleaf som dashboard":
+        model.addAttribute("dashboard", dashboard);
+
+        return "home/businessdevelopers";
+
+    }
+
+
+}
