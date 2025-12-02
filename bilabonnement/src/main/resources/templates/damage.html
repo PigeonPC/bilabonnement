@@ -1,23 +1,16 @@
 <!DOCTYPE html>
-
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Økonomi</title>
-    <!-- CSS -->
+    <title>Dataregistrering</title>
+    <!-- CSS Stylesheet-->
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 
-```
-<!-- Navigationsbar -->
-<div class="topbar">
-    <a href="#">Dataregistrering</a>
-    <a href="#">Skade/Udbedring</a>
-    <a href="#">Forretningsudvikler</a>
-    <a href="#">Økonomi</a>
-</div>
+<!-- Header som fragment -->
+<div th:replace="fragments/header :: header"></div>
 
 <!-- Søgefelt -->
 <div class="search-container">
@@ -30,12 +23,10 @@
 <div class="wrapper">
     <div class="box"><h3>Database</h3></div>
     <div class="box"><h3>Information</h3></div>
-    <div class="box"><h3>KPI'er</h3></div>
+    <div class="box stretched-box"><h3>Klargøring</h3></div>
     <div class="box"><h3>Økonomi</h3></div>
     <div class="box"><h3>Rapporter & Faktura</h3></div>
-    <div class="box"><h3>Ekstra sektion</h3></div>
 </div>
-```
 
 </body>
 </html>

@@ -17,10 +17,4 @@ public class HomeController {
         //noget med at håndtere formmular eller lign.
         return "home/index"; //eller noget...
     }
-
-    @GetMapping("/dataregistrering")
-    public String dataregistrering() {
-        return"dataregistrering";
-    }
-
 }

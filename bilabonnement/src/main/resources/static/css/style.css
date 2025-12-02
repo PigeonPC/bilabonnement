@@ -4,24 +4,42 @@ body {
     background: #ffffff;
 }
 
-/* TOP MENU */
+/* HEADER */
 .topbar {
     display: flex;
-    justify-content: center;
+    justify-content: center;  /* centrerer indholdet */
     align-items: center;
-    background: #6FA88F;
+    background: #6EA37F;      /* topbar baggrund */
     height: 55px;
-    gap: 60px;
+    gap: 0;
+
+    max-width: 70%;           /* lidt bredere end grid */
+    margin: 20px auto 0 auto; /* top margin til white space og centreret */
+    border-radius: 10px;
+    box-sizing: border-box;
 }
 
 .topbar a {
+    flex: 1;                  /* links fylder ligeligt */
+    text-align: center;        /* centrerer tekst */
     color: #ffffff;
     font-size: 14px;
     text-decoration: none;
     font-weight: 600;
+    padding: 0;               /* fjern fast padding, brug flex */
+    display: block;
+    height: 100%;             /* fylder hele højden af topbar */
+    line-height: 55px;        /* vertikal centering */
+    background: none;
 }
 
-/* SEARCH */
+.topbar a.active {
+    background: #006F85;      /* aktiv side */
+    border-radius: 10px;      /* afrundet aktiv fane */
+    color: #ffffff;
+}
+
+/* SØG STELNUMMER */
 .search-container {
     width: 100%;
     display: flex;
@@ -38,7 +56,7 @@ body {
     font-size: 14px;
 }
 
-/* LINE */
+/* MIDLERTIDIG TIDSLINJE */
 .line {
     width: 100%;
     height: 4px;
@@ -48,11 +66,12 @@ body {
 
 /* GRID LAYOUT */
 .wrapper {
-    width: 80%;
+    width: 60%;
     margin: auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;
+    box-sizing: border-box;
 }
 
 .box {
@@ -68,4 +87,14 @@ body {
     margin-top: 0;
     font-size: 18px;
     font-weight: 600;
+}
+
+.stretched-box {
+    background: #EBEDF1;
+    border: 1px solid #cfcfcf;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    min-height: 170px;
+    padding: 20px;
+    grid-column: 1 / -1; /* fylder hele rækken */
 }
