@@ -29,9 +29,7 @@ public class LeaseContractRepo {
         return template.query(sql, rowMapper);
     }
 
-    public LeaseContract findContractByLeasingContractID(int leasingContractID) {
-        String
-    }
+
 
 
 
