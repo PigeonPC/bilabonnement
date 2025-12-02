@@ -1,0 +1,12 @@
+<div th:fragment="header">
+    <div class="topbar">
+        <a th:href="@{/dataregistration}"
+           th:classappend="${activePage == 'dataregistration'} ? 'active' : ''">dataregistrering</a>
+        <a th:href="@{/damage}"
+           th:classappend="${activePage == 'damage'} ? 'active' : ''">Skade/Udbedring</a>
+        <a th:href="@{/businessdevelopers}"
+           th:classappend="${activePage == 'businessdevelopers'} ? 'active' : ''">Forretningsudvikler</a>
+        <a th:href="@{/economy}"
+           th:classappend="${activePage == 'economy'} ? 'active' : ''">Økonomi</a>
+    </div>
+</div>

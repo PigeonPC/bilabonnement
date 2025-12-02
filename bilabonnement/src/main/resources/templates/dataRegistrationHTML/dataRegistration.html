@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dataregistrering</title>
+    <!-- CSS Stylesheet-->
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<!-- Header som fragment -->
+<div th:replace="fragments/header :: header"></div>
+
+<!-- Søgefelt -->
+<div class="search-container">
+    <input class="search-box" type="text" placeholder="Indtast stelnummer" />
+</div>
+
+<div class="line"></div>
+
+<!-- Boks GRID -->
+<div class="wrapper">
+    <div class="box"><h3>Database</h3></div>
+    <div class="box"><h3>Information</h3></div>
+    <div class="box stretched-box"><h3>Klargøring</h3></div>
+    <div class="box"><h3>Økonomi</h3></div>
+    <div class="box"><h3>Rapporter & Faktura</h3></div>
+</div>
+
+</body>
+</html>
