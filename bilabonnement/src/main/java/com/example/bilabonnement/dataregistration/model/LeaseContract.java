@@ -23,11 +23,12 @@ public class LeaseContract {
     private int vehicle_ID;                  // FK
 
 
-    // Tom konstruktør (skal næsten altid være der til fx Spring/JDBC osv.)
+    // Tom konstruktør
     public LeaseContract() {
     }
 
     // Konstruktør uden ID'er????? Måske skal de med, fordi man kan få den til at blive udfyldt automatisk?
+    //Skal man evt. bruge de to FK'er
     public LeaseContract(String leasingContractTerms,
                          Date leaseContractDate,
                          Date startDate,

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 
 // Fjern exclude når databasen er oprettet
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication//(exclude = {DataSourceAutoConfiguration.class})
 public class BilabonnementApplication {
 
 	public static void main(String[] args) {
