@@ -1,4 +1,4 @@
-package com.example.bilabonnement.Util;
+package com.example.bilabonnement.util;
 
 public class ValidationUtils {
 }

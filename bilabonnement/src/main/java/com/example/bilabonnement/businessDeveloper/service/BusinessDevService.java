@@ -1,7 +1,7 @@
-package com.example.bilabonnement.businessDevelopers.service;
+package com.example.bilabonnement.businessDeveloper.service;
 
-import com.example.bilabonnement.businessDevelopers.model.BusinessDevDashboard;
-import com.example.bilabonnement.businessDevelopers.repository.BusinessDevRepository;
+import com.example.bilabonnement.businessDeveloper.model.BusinessDevDashboard;
+import com.example.bilabonnement.businessDeveloper.repository.BusinessDevRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

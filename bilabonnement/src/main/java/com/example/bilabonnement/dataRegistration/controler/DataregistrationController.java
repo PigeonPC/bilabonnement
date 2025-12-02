@@ -9,6 +9,6 @@ public class DataregistrationController {
     @GetMapping("/dataregistration")
     public String dataregistration(Model model) {
         model.addAttribute("activePage", "dataregistration");
-        return "dataregistration";
+        return "dataRegistration";
     }
 }

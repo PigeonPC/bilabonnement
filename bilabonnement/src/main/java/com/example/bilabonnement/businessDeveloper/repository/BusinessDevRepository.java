@@ -1,4 +1,4 @@
-package com.example.bilabonnement.businessDevelopers.repository;
+package com.example.bilabonnement.businessDeveloper.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

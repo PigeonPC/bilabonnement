@@ -1,4 +1,4 @@
-package com.example.bilabonnement.damageReport.controller;
+package com.example.bilabonnement.damageDepartment.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +9,6 @@ public class DamageReportController {
     @GetMapping("/damage")
     public String damage(Model model) {
         model.addAttribute("activePage", "damage");
-        return "damage";
+        return "damageDepartment";
     }
 }
