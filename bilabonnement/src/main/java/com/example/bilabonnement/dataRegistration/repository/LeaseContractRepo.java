@@ -1,6 +1,6 @@
-package com.example.bilabonnement.dataregistration.repository;
+package com.example.bilabonnement.dataRegistration.repository;
 
-import com.example.bilabonnement.dataregistration.model.LeaseContract;
+import com.example.bilabonnement.dataRegistration.model.LeaseContract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

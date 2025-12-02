@@ -1,4 +1,4 @@
-package com.example.bilabonnement.businessdevelopers.model;
+package com.example.bilabonnement.businessDevelopers.model;
 
 import java.math.BigDecimal;
 

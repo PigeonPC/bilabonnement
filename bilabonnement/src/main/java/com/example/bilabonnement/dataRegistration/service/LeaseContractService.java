@@ -1,14 +1,14 @@
-package com.example.bilabonnement.dataregistration.service;
+package com.example.bilabonnement.dataRegistration.service;
 
-import com.example.bilabonnement.dataregistration.model.LeaseContract;
-import com.example.bilabonnement.dataregistration.repository.LeaseContractRepo;
+import com.example.bilabonnement.dataRegistration.model.LeaseContract;
+import com.example.bilabonnement.dataRegistration.repository.LeaseContractRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class leaseContractService {
+public class LeaseContractService {
     @Autowired
     LeaseContractRepo leaseContractRepo;
 
