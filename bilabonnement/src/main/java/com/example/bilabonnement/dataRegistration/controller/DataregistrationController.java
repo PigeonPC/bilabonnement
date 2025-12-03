@@ -1,4 +1,4 @@
-package com.example.bilabonnement.dataRegistration.controler;
+package com.example.bilabonnement.dataRegistration.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
