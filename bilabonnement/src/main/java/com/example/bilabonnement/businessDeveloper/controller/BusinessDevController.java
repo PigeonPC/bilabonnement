@@ -15,15 +15,15 @@ public class BusinessDevController {
 
     //Test:
     @GetMapping("/test")
-    public String testKPI(Model model){
+    public String testKPI(Model model) {
         int rented = devService.getTotalRentedCars();
         model.addAttribute("rented", rented);
         return "businessDeveloperHTML/businessDeveloper";
     }
 
     //rigtigt med dashboard:
-    @GetMapping("/business-developer")
-    public String showDashboard(Model model){
+    @GetMapping("/businessDeveloper")
+    public String showDashboard(Model model) {
 
         //hent data fra service:
         BusinessDevDashboard dashboard = devService.getDashboard();
@@ -33,8 +33,5 @@ public class BusinessDevController {
 
         return "businessDeveloperHTML/businessDeveloper";
     }
-
-    }
-
-
 }
+

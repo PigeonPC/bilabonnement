@@ -13,28 +13,23 @@ import java.util.List;
 
 @Controller
 public class DataregistrationController {
-    @GetMapping("/dataRegistration")
-    public String dataregistration(Model model) {
-        model.addAttribute("activePage", "dataRegistration");
-        return "dataRegistrationHTML/dataRegistration";
-    }
-
-    @GetMapping("/visMere")
-    public String visMere(Model model) {
-        model.addAttribute("activePage", "visMere");
-        return "visMere";
-
     private final LeaseContractService leaseContractService;
 
     public DataregistrationController(LeaseContractService leaseContractService) {
         this.leaseContractService = leaseContractService;
     }
 
+    @GetMapping("/visMere")
+    public String visMere(Model model) {
+        model.addAttribute("activePage", "visMere");
+        return "visMereSkabelon";
+    }
+
 
     //Forsiden til dataregistrering
-    @GetMapping("/dataregistration")
+    @GetMapping("/dataRegistration")
     public String showDataregistration(Model model) {
-        model.addAttribute("activePage", "dataregistration");
+        model.addAttribute("activePage", "dataRegistration");
         return "dataRegistrationHTML/dataRegistration";
     }
 
@@ -48,5 +43,4 @@ public class DataregistrationController {
 
         return "dataRegistrationHTML/bookings";
     }
-
 }
