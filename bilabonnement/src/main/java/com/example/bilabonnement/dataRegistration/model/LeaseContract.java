@@ -5,8 +5,8 @@ import java.util.Date;
 public class LeaseContract {
 
     public enum SubscriptionType {
-        Limited,
-        Unlimited
+        LIMITED,
+        UNLIMITED
     }
 
     private int leasingContractId;        // leasing_contract_id
