@@ -1,5 +1,6 @@
 package com.example.bilabonnement.dataRegistration.repository;
 
+import com.example.bilabonnement.dataRegistration.model.BookingTableView;
 import com.example.bilabonnement.dataRegistration.model.LeaseContract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -58,5 +59,26 @@ public class LeaseContractRepo {
                 "AND approved_date IS NULL";
 
         return template.update(sql, leasingContractId) > 0;
+    }
+
+    public List<BookingTableView> fetchAllBookingsWithRenterNameAndCarModel() {
+        String sql = """
+                SELECT
+                    lc.leasing_contract_id,
+                    lc.lease_contract_date,
+                    CONCAT(c.first_name, ' ', c.last_name) AS customerName,
+                    CONCAT(car.brand, ' ', car.model) AS carModel,
+                    lc.start_date,
+                    lc.end_date,
+                    lc.rental_price,
+                    lc.subscription
+                FROM lease_contracts lc
+                JOIN renters r ON lc.renter_id = r.renter_id
+                JOIN customers c ON r.customer_id = c.customer_id
+                JOIN cars car ON lc.vehicle_id = car.vehicle_id
+                WHERE lc.approved_date IS NULL;
+                """;
+        RowMapper<BookingTableView> rowMapper = new BeanPropertyRowMapper<>(BookingTableView.class);
+        return template.query(sql, rowMapper);
     }
 }

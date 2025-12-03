@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dataregistrering</title>
+    <!-- CSS Stylesheet-->
+    <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/visMereCSS.css}">
+    <link rel="stylesheet" th:href="@{/css/dataRegistration.css}">
+
+</head>
+<body>
+
+<!-- Header som fragment -->
+<div th:replace="fragments/headerFragment :: header"></div>
+
+<!-- Søgefelt -->
+<div class="search-container">
+    <input class="search-box" type="text" placeholder="Indtast stelnummer" />
+</div>
+<div class="line"></div>
+
+
+
+<div class="vismere-wrapper">
+    <div class="vismere-box">
+
+        <a class="back-btn" th:href="@{/dataregistration}">← Tilbage</a>
+
+        <h2>Bookinger klar til godkendelse</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Kontrakt ID</th>
+                <th>Oprettelsesdato</th>
+                <th>Navn</th>
+                <th>Model</th>
+                <th>Startdato</th>
+                <th>Slutdato</th>
+                <th>Pris</th>
+                <th>Abonnement</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td th:text="${booking.leasingContractId}"></td>
+                <td th:text="${#dates.format(booking.leaseContractDate, 'dd-MM-yyyy')}"></td>
+                <td th:text="${booking.customerName}"></td>
+                <td th:text="${booking.carModel}"></td>
+                <td th:text="${#dates.format(booking.startDate, 'dd-MM-yyyy')}"></td>
+                <td th:text="${#dates.format(booking.endDate, 'dd-MM-yyyy')}"></td>
+                <td th:text="${booking.rentalPrice}"></td>
+                <td th:text="${booking.subscription}"></td>
+                <td><a class="btn" th:href="@{/dataregistration}">Se booking</a></td>
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>

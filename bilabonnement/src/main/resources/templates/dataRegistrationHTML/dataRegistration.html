@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dataregistrering</title>
     <!-- CSS Stylesheet-->
-    <link rel="stylesheet" th:href="@{/css/basicStyle.css}" />
+    <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/visMereCSS.css}">
+    <link rel="stylesheet" th:href="@{/css/dataRegistration.css}">
+
 </head>
 <body>
 
@@ -16,16 +19,55 @@
 <div class="search-container">
     <input class="search-box" type="text" placeholder="Indtast stelnummer" />
 </div>
-
 <div class="line"></div>
+
+
 
 <!-- Boks GRID -->
 <div class="wrapper">
-    <div class="box"><h3>Database</h3></div>
-    <div class="box"><h3>Information</h3></div>
-    <div class="box stretched-box"><h3>Klargøring</h3></div>
-    <div class="box"><h3>Økonomi</h3></div>
-    <div class="box"><h3>Rapporter & Faktura</h3></div>
+    <div class="box"><h3>Bookinger</h3>
+        <a class="btn" th:href="@{/dataregistration/bookings}">Se bookinger</a>
+    </div>
+
+    <div class="box"><h3>Lejekontrakter</h3>
+        <a class="btn" th:href="@{/dataregistration}">Se aktive lejekontakter</a>
+        <a class="btn" th:href="@{/dataregistration}">Se alle lejekontrakter</a>
+    </div>
+
+    <div class="box"><h3>Købsaftaler</h3>
+        <a class="btn" th:href="@{/dataregistration}">Se alle købsaftaler</a>
+    </div>
+
+    <div class="box"><h3>Kunder</h3>
+        <a class="btn" th:href="@{/dataregistration}">Se alle kunder</a>
+        <a class="btn" th:href="@{/dataregistration}">Se alle lejere</a>
+        <a class="btn" th:href="@{/dataregistration}">Se alle købere</a>
+
+    </div>
+
+    <div class="box"><h3>Biler</h3>
+        <a class="btn" th:href="@{/dataregistration}">Se alle biler</a>
+
+    </div>
+    <div class="box"><h3>Tilstandsrapporter</h3>
+        <a class="btn" th:href="@{/dataregistration}">Se alle tilstandsrapporter</a>
+    </div>
+</div>
+
+<!-- Container -->
+<div class="vismere-wrapper">
+    <div class="vismere-box">
+
+        <!-- Tilbage-knap -->
+        <a class="back-btn" th:href="@{/dataregistration}">← Tilbage</a>
+
+        <h2>Overskrift for siden</h2>
+        <p>Her kan du skrive hvad siden handler om. Du kan indsætte tekst, tabeller, liste, billeder osv.</p>
+
+        <h3>Undertitel</h3>
+        <p>Mere detaljeret information.</p>
+
+    </div>
 </div>
 
 </body>

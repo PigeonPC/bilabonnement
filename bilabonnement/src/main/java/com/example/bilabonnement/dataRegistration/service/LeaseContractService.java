@@ -1,5 +1,6 @@
 package com.example.bilabonnement.dataRegistration.service;
 
+import com.example.bilabonnement.dataRegistration.model.BookingTableView;
 import com.example.bilabonnement.dataRegistration.model.LeaseContract;
 import com.example.bilabonnement.dataRegistration.repository.LeaseContractRepo;
 import org.springframework.stereotype.Service;
@@ -39,4 +40,9 @@ public class LeaseContractService {
     public boolean approveLeaseContractByID(int leasingContractId) {
         return leaseContractRepo.approveLeaseContractByID(leasingContractId);
     }
+
+    public List<BookingTableView> fetchAllBookingsWithRenterNameAndCarModel() {
+        return leaseContractRepo.fetchAllBookingsWithRenterNameAndCarModel();
+    }
+
 }

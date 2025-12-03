@@ -1,0 +1,25 @@
+.box {
+    display: flex;
+    flex-direction: column; /* under hinanden */
+    gap: 10px;              /* luft mellem knapper */
+    align-items: flex-start; /* lad børnene beholde deres egen bredde */
+}
+
+
+/* knap */
+.btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background: #6EA37F;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.btn:hover {
+    background: #006F85;
+}
