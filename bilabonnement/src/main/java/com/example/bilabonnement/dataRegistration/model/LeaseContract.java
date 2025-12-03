@@ -10,7 +10,7 @@ public class LeaseContract{
 
     public enum SubscriptionType {
         LIMITED,
-        UNLIMITED
+        Limited, UNLIMITED
     }
 
     @Id

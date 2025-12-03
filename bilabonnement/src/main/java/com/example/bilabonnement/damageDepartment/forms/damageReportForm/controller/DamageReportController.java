@@ -95,4 +95,9 @@ public class DamageReportController {
                 ", items=" + (r==null || r.getDamageItems()==null ? 0 : r.getDamageItems().size()) +
                 ", totalKm=" + (r==null?null:r.getTotalKm());
     }
+
+    @GetMapping
+    public String overview(Model model) {
+        return "damageDepartmentHTML/damageDepartment"; // hvis du har en anden side
+    }
 }

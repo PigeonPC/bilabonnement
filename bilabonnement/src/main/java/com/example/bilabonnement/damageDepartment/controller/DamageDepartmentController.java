@@ -10,4 +10,10 @@ public class DamageDepartmentController {
     public String showDamageDepartment() {
         return "damageDepartmentHTML/damageDepartment";
     }
+
+    @GetMapping
+    public String view() {
+        return "damageDepartmentHTML/damageDepartment";
+    }
+
 }

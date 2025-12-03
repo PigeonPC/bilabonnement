@@ -1,10 +1,8 @@
 package com.example.bilabonnement.dataRegistration.controller;
 
 import com.example.bilabonnement.dataRegistration.model.BookingTableView;
-import com.example.bilabonnement.dataRegistration.model.LeaseContract;
+
 import com.example.bilabonnement.dataRegistration.service.LeaseContractService;
-import com.example.bilabonnement.forms.damageReportForm.model.DamageItem;
-import com.example.bilabonnement.forms.damageReportForm.model.DamageReport;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

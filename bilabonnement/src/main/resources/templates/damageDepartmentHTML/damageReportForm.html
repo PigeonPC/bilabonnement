@@ -132,15 +132,21 @@
 
     <!-- ACTIONS -->
     <div class="action-buttons">
-        <button class="back" type="button" onclick="history.back()">Tilbage</button>
+        <!-- Tilbage med bevaret styling -->
+        <button class="back" type="button"
+                th:onclick="'window.location.href=\'' + @{/damageDepartment} + '\';'">
+            Tilbage
+        </button>
+
         <button class="save" type="submit" form="damageForm">Gem</button>
 
         <!-- Genindlæs med leaseId (virker når formularen har leasingContractId) -->
         <form th:action="@{/damageReportForm/new}" method="get" style="display:inline">
             <input type="hidden" name="leaseId" th:value="*{leasingContractId}" />
-            <button class="delete" type="submit">Genindlæs</button>
+            <button class="delete" type="submit">Opret Ny</button>
         </form>
     </div>
+
 </div>
 
 <!-- === Reindex-logic (kritisk for rigtig opdatering) === -->
