@@ -1,26 +1,56 @@
 package com.example.bilabonnement.dataRegistration.model;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 
-public class LeaseContract {
+@Entity
+@Table(name = "lease_contracts")
+public class LeaseContract{
 
     public enum SubscriptionType {
         Limited,
         Unlimited
     }
 
-    private int leasingContractId;        // leasing_contract_id
-    private String leasingContractTerms;  // leasing_contract_terms
-    private Date leaseContractDate;       // lease_contract_date
-    private Date startDate;               // start_date
-    private Date endDate;                 // end_date
-    private double rentalPrice;           // rental_price
-    private SubscriptionType subscription; // subscription ENUM
-    private Date approvedDate;            // approved_date
-    private Date depositPayedDate;        // deposit_payed_date
-    private Date fullAmountPayedDate;     // full_amount_payed_date
-    private int renterId;                 // renter_id
-    private int vehicleId;                // vehicle_id
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "leasing_contract_id")
+    private Integer leasingContractId;
+
+    @Column(name = "leasing_contract_terms")
+    private String leasingContractTerms;
+
+    @Column(name = "lease_contract_date")
+    private Date leaseContractDate;
+
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Column(name = "end_date")
+    private Date endDate;
+
+    @Column(name = "rental_price")
+    private double rentalPrice;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "subscription")
+    private SubscriptionType subscription;
+
+    @Column(name = "approved_date")
+    private Date approvedDate;
+
+    @Column(name = "deposit_payed_date")
+    private Date depositPayedDate;
+
+    @Column(name = "full_amount_payed_date")
+    private Date fullAmountPayedDate;
+
+    @Column(name = "renter_id")
+    private Integer renterId;
+
+    @Column(name = "vehicle_id")
+    private Integer vehicleId;              // vehicle_id
 
     // TOM KONSTRUKTØR (kræves af BeanPropertyRowMapper)
     public LeaseContract() {}

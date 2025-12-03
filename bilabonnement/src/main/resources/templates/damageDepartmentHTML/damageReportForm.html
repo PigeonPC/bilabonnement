@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Skadesrapport</title>
+    <link rel="stylesheet" th:href="@{/css/forms/damageReportForm.css}">
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="top-header">Skadesrapport</div>
+
+    <form id="damageForm"
+          th:action="@{/damageReportForm/save}"
+          th:object="${damageReport}"
+          method="post"
+          class="damage-form">
+
+        <!-- VIGTIGT: skjult id for at MERGE (ikke ny persist) -->
+        <input type="hidden" th:field="*{damageReportId}"/>
+
+        <!-- Lease / meta -->
+        <div class="input-wrapper">
+            <span>Lejekontrakt ID</span>
+            <input type="number" th:field="*{leasingContractId}">
+        </div>
+
+        <div class="input-wrapper">
+            <span>Vehicle ID</span>
+            <input type="text" th:value="${vehicleId}" readonly>
+        </div>
+
+        <div class="input-wrapper">
+            <span>Renter ID</span>
+            <input type="text" th:value="${renterId}" readonly>
+        </div>
+
+        <div class="input-wrapper">
+            <span>Dato for rapport</span>
+            <input type="date" th:field="*{reportDate}">
+        </div>
+
+        <div class="input-wrapper">
+            <span>Kilometertal</span>
+            <input type="number" th:field="*{totalKm}">
+        </div>
+
+        <!-- SKADER -->
+        <div class="damage-section-box">
+            <h3 class="damage-title">Skader</h3>
+
+            <div class="damage-list" th:each="item, iter : *{damageItems}">
+                <div class="damage-row">
+
+                    <!-- Nr -->
+                    <div class="damage-field id">
+                        <label>Nr.</label>
+                        <input type="text" th:value="${iter.index + 1}" readonly>
+                    </div>
+
+                    <!-- Skjult item-id så update/merge virker -->
+                    <input type="hidden" th:field="*{damageItems[__${iter.index}__].damageItemId}"/>
+
+                    <!-- Beskrivelse -->
+                    <div class="damage-field description">
+                        <label>Beskrivelse</label>
+                        <input type="text" th:field="*{damageItems[__${iter.index}__].description}">
+                    </div>
+
+                    <!-- Pris -->
+                    <div class="damage-field price">
+                        <label>Pris</label>
+                        <input type="number"
+                               th:field="*{damageItems[__${iter.index}__].damageItemPrice}"
+                               min="0" step="0.01">
+                    </div>
+
+                    <!-- Minus -->
+                    <button type="button"
+                            class="remove-btn"
+                            onclick="removeRow(this)"
+                            aria-label="Fjern">−</button>
+                </div>
+            </div>
+
+            <!-- Plus -->
+            <button class="add-btn" type="button"
+                    onclick="
+                      const list = this.closest('.damage-section-box').querySelector('.damage-list');
+                      const idx  = list.querySelectorAll('.damage-row').length;
+                      const row  = document.createElement('div');
+                      row.className='damage-row';
+                      row.innerHTML =
+                        `<div class='damage-field id'><label>Nr.</label><input type='text' value='${idx+1}' readonly></div>
+                         <input type='hidden' name='damageItems[${idx}].damageItemId' value=''/>
+                         <div class='damage-field description'><label>Beskrivelse</label>
+                           <input name='damageItems[${idx}].description' type='text'></div>
+                         <div class='damage-field price'><label>Pris</label>
+                           <input name='damageItems[${idx}].damageItemPrice' type='number' min='0' step='0.01'></div>
+                         <button type='button' class='remove-btn' onclick='removeRow(this)' aria-label='Fjern'>−</button>`;
+                      list.appendChild(row);
+                      reindexRows();  /* <-- VIGTIGT efter tilføjelse */
+                    "
+                    aria-label="Tilføj">+</button>
+
+            <div class="input-wrapper">
+                <span>Pris i alt (skader)</span>
+                <input type="number" th:field="*{totalDamagePrice}" readonly>
+            </div>
+        </div>
+
+        <div class="input-wrapper">
+            <span>Kørte kilometer</span>
+            <input type="number" th:value="${drivenKm}" readonly>
+        </div>
+
+        <div class="input-wrapper">
+            <span>Pris for ekstra km</span>
+            <input type="number" th:value="${extraKmPrice}" readonly>
+        </div>
+
+        <div class="input-wrapper">
+            <span>Pris i alt</span>
+            <input type="number" th:field="*{totalPrice}" readonly>
+        </div>
+
+        <div class="paid-section">
+            <label>Betalt?</label>
+            <label><input type="radio" th:field="*{paidStatus}" value="true"> Ja</label>
+            <label><input type="radio" th:field="*{paidStatus}" value="false"> Nej</label>
+        </div>
+    </form>
+
+    <!-- ACTIONS -->
+    <div class="action-buttons">
+        <button class="back" type="button" onclick="history.back()">Tilbage</button>
+        <button class="save" type="submit" form="damageForm">Gem</button>
+
+        <!-- Genindlæs med leaseId (virker når formularen har leasingContractId) -->
+        <form th:action="@{/damageReportForm/new}" method="get" style="display:inline">
+            <input type="hidden" name="leaseId" th:value="*{leasingContractId}" />
+            <button class="delete" type="submit">Genindlæs</button>
+        </form>
+    </div>
+</div>
+
+<!-- === Reindex-logic (kritisk for rigtig opdatering) === -->
+<script>
+    function reindexRows() {
+        const rows = document.querySelectorAll('.damage-section-box .damage-list .damage-row');
+        rows.forEach((row, i) => {
+            // skjult id
+            const hid = row.querySelector("input[type='hidden'][name^='damageItems['][name$='.damageItemId']");
+            if (hid) hid.name = `damageItems[${i}].damageItemId`;
+            // beskrivelse
+            const desc = row.querySelector("input[name^='damageItems['][name$='.description']");
+            if (desc) desc.name = `damageItems[${i}].description`;
+            // pris
+            const price = row.querySelector("input[name^='damageItems['][name$='.damageItemPrice']");
+            if (price) price.name = `damageItems[${i}].damageItemPrice`;
+            // visuelt nr.
+            const nr = row.querySelector(".damage-field.id input[readonly]");
+            if (nr) nr.value = i + 1;
+        });
+    }
+
+    function removeRow(btn) {
+        const row = btn.closest('.damage-row');
+        if (!row) return;
+        row.remove();
+        reindexRows(); // <-- VIGTIGT efter sletning
+    }
+
+    // Sørg for reindex lige inden submit (hvis der er ‘huller’ i index)
+    document.getElementById('damageForm').addEventListener('submit', reindexRows);
+</script>
+</body>
+</html>

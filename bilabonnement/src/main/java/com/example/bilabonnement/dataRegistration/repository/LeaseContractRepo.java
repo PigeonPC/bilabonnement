@@ -1,6 +1,8 @@
 package com.example.bilabonnement.dataRegistration.repository;
 
 import com.example.bilabonnement.dataRegistration.model.LeaseContract;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +16,14 @@ public class LeaseContractRepo {
 
     @Autowired
     JdbcTemplate template; // Ved hvordan man forbinder til DB, bruger username/password, og MySQL driver.
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+
+    public LeaseContract findById(Long id) {
+        return entityManager.find(LeaseContract.class, id.intValue());
+    }
 
     // Hent alle lease_contracts (både approved og ikke approved)
     public List<LeaseContract> fetchAllLeaseContracts() {
