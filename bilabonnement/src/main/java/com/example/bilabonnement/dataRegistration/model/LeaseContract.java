@@ -9,8 +9,8 @@ import java.util.Date;
 public class LeaseContract{
 
     public enum SubscriptionType {
-        Limited,
-        Unlimited
+        LIMITED,
+        UNLIMITED
     }
 
     @Id

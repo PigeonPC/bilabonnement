@@ -53,7 +53,7 @@ public class DamageReportService {
                                         LeaseContract.SubscriptionType subscription) {
         if (totalKm == null || mileage == null || subscription == null) return 0;
         int drivenKm = calculateDrivenKm(totalKm, mileage);
-        int freeKmLimit = (subscription == LeaseContract.SubscriptionType.Limited) ? 400 : 1500;
+        int freeKmLimit = (subscription == LeaseContract.SubscriptionType.LIMITED) ? 400 : 1500;
         double pricePerKm = 2.5;
         if (drivenKm <= freeKmLimit) return 0;
         return (drivenKm - freeKmLimit) * pricePerKm;
@@ -84,7 +84,7 @@ public class DamageReportService {
 
         int mileage = (car != null) ? car.getMileage() : 0;
         LeaseContract.SubscriptionType subscription =
-                (lease != null) ? lease.getSubscription() : LeaseContract.SubscriptionType.Limited;
+                (lease != null) ? lease.getSubscription() : LeaseContract.SubscriptionType.LIMITED;
 
         double extraKmPrice = calculateExtraKmPrice(report.getTotalKm(), mileage, subscription);
         report.setTotalPrice(damageSum.add(BigDecimal.valueOf(extraKmPrice)));
