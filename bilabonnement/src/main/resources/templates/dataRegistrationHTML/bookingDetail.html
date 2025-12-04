@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking detaljer</title>
+
+    <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/visMereCSS.css}">
+    <link rel="stylesheet" th:href="@{/css/dataRegistration.css}">
+</head>
+
+<body>
+<!-- OLGA! DU glemte at customer skal komme med sin ekstra info fra renter! -->
+
+<!-- Header -->
+<div th:replace="fragments/headerFragment :: header"></div>
+
+<!-- Container -->
+<div class="vismere-wrapper">
+    <div class="vismere-box">
+
+        <!-- Tilbage-knap -->
+        <a class="back-btn" th:href="@{/dataRegistration/bookings}">← Tilbage til bookinger</a>
+
+        <!-- Øverste overskrift -->
+        <h2>
+            Booking ID:
+            <span th:text="${booking.leasingContractId}"></span>
+             - <span th:text="${booking.customerName}"></span>
+        </h2>
+        <p>
+            Oprettet:
+            <span th:text="${#dates.format(booking.leaseContractDate, 'dd-MM-yyyy')}"></span>
+        </p>
+
+        <!-- BOOKING-DETALJER -->
+        <h3>Bookingdetaljer</h3>
+        <table class="detail-table">
+            <tr>
+                <th>Booking ID</th>
+                <td th:text="${(booking.leasingContractId)}"></td>
+            </tr>
+            <tr>
+                <th>Startdato</th>
+                <td th:text="${#dates.format(booking.startDate, 'dd-MM-yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Slutdato</th>
+                <td th:text="${#dates.format(booking.endDate, 'dd-MM-yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Pris pr. måned</th>
+                <td th:text="${booking.rentalPrice} + ' DKK'"></td>
+            </tr>
+            <tr>
+                <th>Abonnement</th>
+                <td th:text="${booking.subscription}"></td>
+            </tr>
+        </table>
+
+        <!-- KUNDE-INFO -->
+        <h3>Kunde</h3>
+        <table class="detail-table">
+            <tr>
+                <th>Navn</th>
+                <td th:text="${booking.customerName}"></td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td th:text="${booking.email}"></td>
+            </tr>
+            <tr>
+                <th>Telefon</th>
+                <td th:text="${booking.phone}"></td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>
+                    <span th:text="${booking.address}"></span><br/>
+                    <span th:text="${booking.zip}"></span>
+                    <span th:text="${booking.country}"></span>
+                </td>
+            </tr>
+        </table>
+
+        <!-- BIL-INFO -->
+        <h3>Bil</h3>
+        <table class="detail-table">
+            <tr>
+                <th>Model</th>
+                <td th:text="${booking.carModel}"></td>
+            </tr>
+            <tr>
+                <th>Stelnummer</th>
+                <td th:text="${booking.chassisNumber}"></td>
+            </tr>
+            <tr>
+                <th>KM stand</th>
+                <td th:text="${booking.mileage} + ' km'"></td>
+            </tr>
+            <tr>
+                <th>Udstyrsniveau</th>
+                <td th:text="${booking.equipmentLevel}"></td>
+            </tr>
+        </table>
+
+        <a class="box-button" th:href="@{/dataregistration}">Opret lejekontrakt</a>
+
+        <!-- Her kan du senere tilføje knapper som "Godkend booking" osv. -->
+        <!--
+        <div class="button-row">
+            <form th:action="@{/dataRegistration/bookings/{id}/approve(id=${booking.leasingContractId})}" method="post">
+                <button type="submit" class="primary-button">Godkend booking</button>
+            </form>
+        </div>
+        -->
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -52,6 +52,7 @@ public class LeaseContract{
     @Column(name = "vehicle_id")
     private Integer vehicleId;              // vehicle_id
 
+
     // TOM KONSTRUKTØR (kræves af BeanPropertyRowMapper)
     public LeaseContract() {
 

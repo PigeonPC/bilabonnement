@@ -6,9 +6,7 @@
     <title>Dataregistrering</title>
     <!-- CSS Stylesheet-->
     <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
-    <link rel="stylesheet" th:href="@{/css/visMereCSS.css}">
     <link rel="stylesheet" th:href="@{/css/dataRegistration.css}">
-    <link rel="stylesheet" th:href="@{/css/bookingTable.css}">
 
 </head>
 <body>
@@ -16,18 +14,15 @@
 <!-- Header som fragment -->
 <div th:replace="fragments/headerFragment :: header"></div>
 
-<!-- Søgefelt -->
-<div class="search-container">
-    <input class="search-box" type="text" placeholder="Indtast stelnummer" />
-</div>
-<div class="line"></div>
+
+<div class="tabel-wrapper">
 
 
+    <div class="tabel-box">
 
-<div class="vismere-wrapper">
-    <div class="vismere-box">
-
-        <a class="back-btn" th:href="@{/dataRegistration}">← Tilbage</a>
+        <div class="top-row">
+            <a class="back-btn" th:href="@{/dataRegistration}">← Tilbage</a>
+        </div>
 
         <h2>Bookinger klar til godkendelse</h2>
 
@@ -56,7 +51,11 @@
                 <td th:text="${#dates.format(booking.endDate, 'dd-MM-yyyy')}"></td>
                 <td th:text="${booking.rentalPrice}"></td>
                 <td th:text="${booking.subscription}"></td>
-                <td><a class="btn" th:href="@{/dataregistration}">Se booking</a></td>
+                <td>
+                    <a class="table-button"
+                       th:href="@{/dataRegistration/bookings/{id}(id=${booking.leasingContractId})}">
+                        Se booking</a>
+                </td>
             </tr>
 
             </tbody>

@@ -1,13 +1,15 @@
-.box {
+/* dataregistration.css */
+
+
+.top-row {
+    width: 100%;
     display: flex;
-    flex-direction: column; /* under hinanden */
-    gap: 10px;              /* luft mellem knapper */
-    align-items: flex-start; /* lad børnene beholde deres egen bredde */
+    justify-content: flex-start;  /* knap til venstre */
+    margin-bottom: 15px;
 }
 
-
-/* knap */
-.btn {
+/* Tilbage knap */
+.back-btn {
     display: inline-block;
     margin-bottom: 20px;
     padding: 8px 16px;
@@ -18,9 +20,111 @@
     font-weight: 600;
     border-radius: 10px;
     transition: background 0.2s ease;
+    align-items: flex-end;
 }
 
-.btn:hover {
+.back-btn:hover {
     background: #006F85;
 }
 
+
+/* H2 kun inde i tabel-boksen */
+.tabel-box h2 {
+    margin-top: 5px;
+}
+
+/* Wrapper omkring boksen */
+.tabel-wrapper {
+    width: 70%;
+    margin: 40px auto;
+    display: flex;
+    justify-content: center;
+}
+
+/* Selve boksen */
+.tabel-box {
+    width: 100%;
+    background: #EBEDF1;
+    border: 1px solid #cfcfcf;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    min-height: 400px;
+
+    /* centrer alt indhold inde i boksen */
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* centrerer horisontalt */
+}
+
+
+/* -------- BOOKING TABLE STYLING -------- */
+
+/* Knap inde i booking-tabel */
+.booking-table .table-button {
+    display: inline-block;
+    padding: 6px 14px;
+    background-color: #6EA37F;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;       /* ingen linjeskift i "Se booking" */
+    text-align: center;
+}
+
+/* Hover-effekt */
+.booking-table .table-button:hover {
+    background-color: #5a845f;
+}
+
+.booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    font-size: 16px;
+}
+
+/* Header styling */
+.booking-table th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 2px solid #cfd6dc;
+    white-space: nowrap;
+}
+
+/* Rækker */
+.booking-table td {
+    padding: 10px 14px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* Zebra stripes */
+.booking-table tbody tr:nth-child(even) {
+    background-color: #f6f8f9;
+}
+
+
+/* -------------- BookingDetail ------------- */
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+    font-size: 15px;
+}
+
+.detail-table th {
+    text-align: left;
+    width: 180px;
+    padding: 6px 10px;
+    font-weight: 600;
+    background-color: #f3f5f7;
+}
+
+.detail-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #e1e4e8;
+}

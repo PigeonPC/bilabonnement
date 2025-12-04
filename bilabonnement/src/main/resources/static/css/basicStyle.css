@@ -1,8 +1,11 @@
+/* basicStyle.css */
+
 /* --- BASIS STYLING --- */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #ffffff;
+    padding-bottom: 30px;
 }
 
 /* HEADER */
