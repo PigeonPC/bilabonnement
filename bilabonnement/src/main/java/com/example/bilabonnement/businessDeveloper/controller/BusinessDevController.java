@@ -13,17 +13,11 @@ public class BusinessDevController {
     @Autowired
     BusinessDevService devService;
 
-    //Test:
-    @GetMapping("/test")
-    public String testKPI(Model model) {
-        int rented = devService.getTotalRentedCars();
-        model.addAttribute("rented", rented);
-        return "businessDeveloperHTML/businessDeveloper";
-    }
-
     //rigtigt med dashboard:
     @GetMapping("/businessDeveloper")
     public String showDashboard(Model model) {
+        // Markerer headeren som aktiv
+        model.addAttribute("activePage", "businessDeveloper");
 
         //hent data fra service:
         BusinessDevDashboard dashboard = devService.getDashboard();
