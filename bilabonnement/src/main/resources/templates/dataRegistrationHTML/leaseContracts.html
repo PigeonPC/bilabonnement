@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lejekontrakter</title>
+  <!-- CSS Stylesheet-->
+  <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
+  <link rel="stylesheet" th:href="@{/css/dataRegistration.css}">
+
+</head>
+<body>
+
+<!-- Header som fragment -->
+<div th:replace="fragments/headerFragment :: header"></div>
+
+<div class="tabel-wrapper">
+
+  <div class="tabel-box">
+
+    <div class="top-row">
+      <a class="back-btn" th:href="@{/dataRegistration}">← Tilbage</a>
+    </div>
+
+
+    <h2>Godkendte lejekontrakter</h2>
+
+    <table class="booking-table">
+      <thead>
+      <tr>
+        <th>Kontrakt ID</th>
+        <th>Godkendelsesdato</th>
+        <th>Navn</th>
+        <th>Model</th>
+        <th>Startdato</th>
+        <th>Slutdato</th>
+        <th>Pris</th>
+        <th>Abonnement</th>
+        <th></th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="leaseContract : ${leaseContracts}">
+        <td th:text="${leaseContract.leasingContractId}"></td>
+        <td th:text="${leaseContract.approvedDate}"></td>
+        <td th:text="${leaseContract.customerName}"></td>
+        <td th:text="${leaseContract.carModel}"></td>
+        <td th:text="${#dates.format(leaseContract.startDate, 'dd-MM-yyyy')}"></td>
+        <td th:text="${#dates.format(leaseContract.endDate, 'dd-MM-yyyy')}"></td>
+        <td th:text="${leaseContract.rentalPrice}"></td>
+        <td th:text="${leaseContract.subscription}"></td>
+        <td>
+          <a th:href="@{'/dataRegistration/leaseContracts/' + ${leaseContract.leasingContractId}}"
+             class="box-button">
+            Se mere →
+          </a>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>

@@ -1,10 +1,7 @@
 package com.example.bilabonnement.dataRegistration.controller;
 
-import com.example.bilabonnement.dataRegistration.model.BookingDetailView;
-import com.example.bilabonnement.dataRegistration.model.BookingTableView;
+import com.example.bilabonnement.dataRegistration.model.*;
 
-import com.example.bilabonnement.dataRegistration.model.Car;
-import com.example.bilabonnement.dataRegistration.model.CarView;
 import com.example.bilabonnement.dataRegistration.service.CarService;
 import com.example.bilabonnement.dataRegistration.service.LeaseContractService;
 import org.springframework.stereotype.Controller;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +27,12 @@ public class DataregistrationController {
         this.carService = carService;
     }
 
+    @GetMapping("/visMere")
+    public String visMere(Model model) {
+        model.addAttribute("activePage", "visMere");
+        return "visMereSkabelon";
+    }
+
     // Forsiden til dataregistrering
     @GetMapping("/dataRegistration")
     public String showDataregistration(Model model) {
@@ -36,32 +40,63 @@ public class DataregistrationController {
         return "dataRegistrationHTML/dataRegistration";
     }
 
-    // Vis liste over bookinger
-    @GetMapping("/dataregistration/bookings")
     //Vis liste over bookinger
     @GetMapping("/dataRegistration/bookings")
     public String showBookingsTable(Model model) {
         List<BookingTableView> bookings =
                 leaseContractService.fetchAllBookingsWithRenterNameAndCarModel();
+
         model.addAttribute("bookings", bookings);
+
         return "dataRegistrationHTML/bookings";
     }
 
-    @GetMapping("/visMere")
-    public String visMere(Model model) {
-        model.addAttribute("activePage", "visMere");
-        return "visMereSkabelon";
-    }
-
-    //Vis specifik booking, tager imod de id fra den booking man har trykket på
+    //Vis specifik booking
     @GetMapping("/dataRegistration/bookings/{id}")
     public String showBookingDetail(@PathVariable("id") int leasingContractId, Model model) {
 
-        BookingDetailView booking = leaseContractService.fetchBookingDetailByIdPlusCustomerAndCar(leasingContractId);
+        BookingDetailView booking = leaseContractService.fetchBookingDetailByIdPlusCustomerRenterAndCar(leasingContractId);
         model.addAttribute("booking", booking);
 
         return "dataRegistrationHTML/bookingDetail";
     }
+
+    //Godkender en booking
+    @PostMapping("/dataRegistration/bookings/{id}/approve")
+    public String approveBooking(@PathVariable int id, RedirectAttributes redirectAttributes) {
+
+        boolean success = leaseContractService.approveLeaseContractByIdAndUpdateCarStatus(id);
+
+        if (success) {
+            redirectAttributes.addFlashAttribute("message", "Booking godkendt!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Kunne ikke godkende booking.");
+        }
+
+        return "redirect:/dataRegistration/bookings";
+    }
+
+    //Vis liste over godkendte lejekontrakter med Navn og bil
+    @GetMapping("/dataRegistration/leaseContracts")
+    public String showLeaseContractTable(Model model) {
+        List<LeaseContractTableView> leaseContracts =
+                leaseContractService.fetchAllLeaseContractsWithRenterNameAndCarModel();
+
+        model.addAttribute("leaseContracts", leaseContracts);
+
+        return "dataRegistrationHTML/leaseContracts";
+    }
+
+
+    //Vis specifik lejekontrakt
+    @GetMapping("/dataRegistration/leaseContracts/{id}")
+    public String showLeaseContractDetail(@PathVariable int id, Model model) {
+        LeaseContractDetailView leaseContract = leaseContractService.fetchLeaseContractDetailByIdPlusCustomerRenterAndCar(id);
+        model.addAttribute("leaseContract", leaseContract);
+
+        return "dataRegistrationHTML/leaseContractDetail";
+    }
+
 
     //Vis liste over biler fra cars tabellen:
     @GetMapping("/dataRegistration/cars")
@@ -123,5 +158,7 @@ public class DataregistrationController {
         return "dataRegistrationHTML/carsByStatus";
 
     }
+
+
 
 }

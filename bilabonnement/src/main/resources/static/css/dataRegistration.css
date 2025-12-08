@@ -4,8 +4,19 @@
 .top-row {
     width: 100%;
     display: flex;
-    justify-content: flex-start;  /* knap til venstre */
+    justify-content: flex-start; /* knap til venstre */
     margin-bottom: 15px;
+}
+
+.bottom-row {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; /* knap til højre */
+    margin-bottom: 15px;
+}
+
+.bottom-row a {
+    font-size: 20px;
 }
 
 /* Tilbage knap */

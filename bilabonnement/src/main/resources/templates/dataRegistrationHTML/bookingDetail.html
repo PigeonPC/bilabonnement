@@ -10,7 +10,6 @@
 </head>
 
 <body>
-<!-- OLGA! DU glemte at customer skal komme med sin ekstra info fra renter! -->
 
 <!-- Header -->
 <div th:replace="fragments/headerFragment :: header"></div>
@@ -26,7 +25,7 @@
         <h2>
             Booking ID:
             <span th:text="${booking.leasingContractId}"></span>
-             - <span th:text="${booking.customerName}"></span>
+            - <span th:text="${booking.customerName}"></span>
         </h2>
         <p>
             Oprettet:
@@ -38,7 +37,11 @@
         <table class="detail-table">
             <tr>
                 <th>Booking ID</th>
-                <td th:text="${(booking.leasingContractId)}"></td>
+                <td th:text="${booking.leasingContractId}"></td>
+            </tr>
+            <tr>
+                <th>Lejekontraktvilkår</th>
+                <td th:text="${booking.leasingContractTerms}"></td>
             </tr>
             <tr>
                 <th>Startdato</th>
@@ -50,11 +53,29 @@
             </tr>
             <tr>
                 <th>Pris pr. måned</th>
-                <td th:text="${booking.rentalPrice} + ' DKK'"></td>
+                <td th:text="${#numbers.formatDecimal(booking.rentalPrice, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
             </tr>
             <tr>
                 <th>Abonnement</th>
                 <td th:text="${booking.subscription}"></td>
+            </tr>
+            <tr>
+                <th>Godkendt dato</th>
+                <td th:text="${booking.approvedDate != null} ?
+                              ${#dates.format(booking.approvedDate, 'dd-MM-yyyy HH:mm')} : 'Ikke godkendt'">
+                </td>
+            </tr>
+            <tr>
+                <th>Depositum betalt</th>
+                <td th:text="${booking.depositPayedDate != null} ?
+                              ${#dates.format(booking.depositPayedDate, 'dd-MM-yyyy HH:mm')} : 'Ikke betalt'">
+                </td>
+            </tr>
+            <tr>
+                <th>Fuldt beløb betalt</th>
+                <td th:text="${booking.fullAmountPayedDate != null} ?
+                              ${#dates.format(booking.fullAmountPayedDate, 'dd-MM-yyyy HH:mm')} : 'Ikke betalt'">
+                </td>
             </tr>
         </table>
 
@@ -62,8 +83,24 @@
         <h3>Kunde</h3>
         <table class="detail-table">
             <tr>
+                <th>Kunde ID</th>
+                <td th:text="${booking.customerId}"></td>
+            </tr>
+            <tr>
                 <th>Navn</th>
                 <td th:text="${booking.customerName}"></td>
+            </tr>
+            <tr>
+                <th>Fornavn</th>
+                <td th:text="${booking.firstName}"></td>
+            </tr>
+            <tr>
+                <th>Efternavn</th>
+                <td th:text="${booking.lastName}"></td>
+            </tr>
+            <tr>
+                <th>Kørekortnr.</th>
+                <td th:text="${booking.licenseNumber}"></td>
             </tr>
             <tr>
                 <th>Email</th>
@@ -78,8 +115,17 @@
                 <td>
                     <span th:text="${booking.address}"></span><br/>
                     <span th:text="${booking.zip}"></span>
-                    <span th:text="${booking.country}"></span>
+                    <span th:text="${booking.country}"></span><br/>
+                    <span th:text="${booking.floor}"></span>
                 </td>
+            </tr>
+            <tr>
+                <th>CPR / SSN</th>
+                <td th:text="${booking.ssn}"></td>
+            </tr>
+            <tr>
+                <th>Credit score</th>
+                <td th:text="${booking.creditScore}"></td>
             </tr>
         </table>
 
@@ -87,8 +133,20 @@
         <h3>Bil</h3>
         <table class="detail-table">
             <tr>
+                <th>Vehicle ID</th>
+                <td th:text="${booking.vehicleId}"></td>
+            </tr>
+            <tr>
                 <th>Model</th>
                 <td th:text="${booking.carModel}"></td>
+            </tr>
+            <tr>
+                <th>Mærke</th>
+                <td th:text="${booking.brand}"></td>
+            </tr>
+            <tr>
+                <th>Modelnavn</th>
+                <td th:text="${booking.model}"></td>
             </tr>
             <tr>
                 <th>Stelnummer</th>
@@ -102,18 +160,53 @@
                 <th>Udstyrsniveau</th>
                 <td th:text="${booking.equipmentLevel}"></td>
             </tr>
+            <tr>
+                <th>Stålpris</th>
+                <td th:text="${#numbers.formatDecimal(booking.steelPrice, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
+            </tr>
+            <tr>
+                <th>Registreringsafgift</th>
+                <td th:text="${#numbers.formatDecimal(booking.registrationTax, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
+            </tr>
+            <tr>
+                <th>CO₂-udledning</th>
+                <td th:text="${booking.co2Emission} + ' g/km'"></td>
+            </tr>
+            <tr>
+                <th>Leasingkode</th>
+                <td th:text="${booking.leasingCode}"></td>
+            </tr>
+            <tr>
+                <th>IRK-kode</th>
+                <td th:text="${booking.irkCode}"></td>
+            </tr>
+            <tr>
+                <th>Købsdato</th>
+                <td th:text="${#dates.format(booking.dateOfPurchase, 'dd-MM-yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Købspris</th>
+                <td th:text="${#numbers.formatDecimal(booking.purchasePrice, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
+            </tr>
+            <tr>
+                <th>Seneste status</th>
+                <td th:text="${booking.lastStatus != null} ? ${booking.lastStatus} : 'Ingen status'"></td>
+            </tr>
+            <tr>
+                <th>Statusdato</th>
+                <td th:text="${booking.lastStatusTimestamp != null} ?
+                              ${#dates.format(booking.lastStatusTimestamp, 'dd-MM-yyyy HH:mm')} : 'Ingen statusdato'">
+                </td>
+            </tr>
         </table>
 
-        <a class="box-button" th:href="@{/dataregistration}">Opret lejekontrakt</a>
-
-        <!-- Her kan du senere tilføje knapper som "Godkend booking" osv. -->
-        <!--
-        <div class="button-row">
-            <form th:action="@{/dataRegistration/bookings/{id}/approve(id=${booking.leasingContractId})}" method="post">
-                <button type="submit" class="primary-button">Godkend booking</button>
+        <div class="bottom-row">
+            <form th:action="@{/dataRegistration/bookings/{id}/approve(id=${booking.leasingContractId})}"
+                  method="post">
+                <button type="submit" class="box-button">Godkend lejekontrakt</button>
             </form>
         </div>
-        -->
+
 
     </div>
 </div>

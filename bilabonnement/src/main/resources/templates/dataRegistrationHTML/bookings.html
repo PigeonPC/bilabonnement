@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dataregistrering</title>
+    <title>Bookinger</title>
     <!-- CSS Stylesheet-->
     <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
     <link rel="stylesheet" th:href="@{/css/dataRegistration.css}">
@@ -14,9 +14,7 @@
 <!-- Header som fragment -->
 <div th:replace="fragments/headerFragment :: header"></div>
 
-
 <div class="tabel-wrapper">
-
 
     <div class="tabel-box">
 
@@ -24,13 +22,19 @@
             <a class="back-btn" th:href="@{/dataRegistration}">← Tilbage</a>
         </div>
 
-        <h2>Bookinger klar til godkendelse</h2>
+        <!-- SUCCESS -->
+        <div th:if="${message}" class="success-box" th:text="${message}"></div>
+
+        <!-- ERROR -->
+        <div th:if="${error}" class="error-box" th:text="${error}"></div>
+
+        <h2>Bookinger</h2>
 
         <table class="booking-table">
             <thead>
             <tr>
-                <th>Kontrakt ID</th>
-                <th>Oprettelsesdato</th>
+                <th>ID</th>
+                <th>Oprettet</th>
                 <th>Navn</th>
                 <th>Model</th>
                 <th>Startdato</th>
@@ -38,9 +42,9 @@
                 <th>Pris</th>
                 <th>Abonnement</th>
                 <th></th>
-
             </tr>
             </thead>
+
             <tbody>
             <tr th:each="booking : ${bookings}">
                 <td th:text="${booking.leasingContractId}"></td>
@@ -52,9 +56,10 @@
                 <td th:text="${booking.rentalPrice}"></td>
                 <td th:text="${booking.subscription}"></td>
                 <td>
-                    <a class="table-button"
-                       th:href="@{/dataRegistration/bookings/{id}(id=${booking.leasingContractId})}">
-                        Se booking</a>
+                    <a th:href="@{'/dataRegistration/bookings/' + ${booking.leasingContractId}}"
+                       class="box-button">
+                        Se mere →
+                    </a>
                 </td>
             </tr>
 

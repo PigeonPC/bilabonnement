@@ -5,7 +5,7 @@ import com.example.bilabonnement.dataRegistration.model.LeaseContract.Subscripti
 
 import java.util.Date;
 
-public class BookingDetailView {
+public class LeaseContractDetailView {
 
     // ---------- LEASE CONTRACT ----------
     private int leasingContractId;          // lc.leasing_contract_id

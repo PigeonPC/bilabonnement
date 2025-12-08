@@ -15,12 +15,6 @@
 <!-- Header som fragment -->
 <div th:replace="fragments/headerFragment :: header"></div>
 
-<!-- Søgebar + statusbillede -->
-<div class="search-area">
-    <div th:replace="~{fragments/searchBarFragment :: searchBar(selectedVehicleId=${session.selectedVehicleId})}"></div>
-    <div th:replace="~{fragments/statusGraphicFragment :: statusGraphic(statusImage=${session.statusImage})}"></div>
-</div>
-
 <div class="line"></div>
 
 
@@ -31,8 +25,8 @@
     </div>
 
     <div class="box"><h3>Lejekontrakter</h3>
-        <a class="box-button" th:href="@{/dataregistration}">Se aktive lejekontakter</a>
-        <a class="box-button" th:href="@{/dataregistration}">Se alle lejekontrakter</a>
+        <a class="box-button" th:href="@{/dataRegistration}">Se aktive lejekontakter</a>
+        <a class="box-button" th:href="@{/dataRegistration/leaseContracts}">Se alle lejekontrakter</a>
     </div>
 
     <div class="box"><h3>Købsaftaler</h3>
