@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="statusGraphic(statusImage)">
+  <div class="status-graphic">
+    <img class="status-img"
+         th:src="@{/imageStates/{img}(img=${(statusImage != null and !#strings.isEmpty(statusImage)) ? statusImage : '0.png'})}"
+         th:alt="${'Bilstatus ' + ((statusImage != null and !#strings.isEmpty(statusImage)) ? statusImage : '0.png')}" />
+  </div>
+</div>
+</body>
+</html>

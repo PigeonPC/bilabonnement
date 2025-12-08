@@ -1,0 +1,19 @@
+/** CSS for seachbar og grafik med bilens sates */
+
+/* centrer og skaler grafik pænt */
+.search-area { display: grid; gap: 12px; }
+
+.status-graphic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+}
+
+.status-graphic .status-img {
+    height: clamp(150px, 14vw, 200px);
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+

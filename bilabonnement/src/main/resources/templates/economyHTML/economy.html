@@ -9,12 +9,13 @@
 </head>
 <body>
 
-<!-- Header som fragment -->
-<div th:replace="fragments/headerFragment :: header"></div>
+<!-- Header -->
+<div th:replace="~{fragments/headerFragment :: header}"></div>
 
-<!-- Søgefelt -->
-<div class="search-container">
-    <input class="search-box" type="text" placeholder="Indtast stelnummer" />
+<!-- Søgebar + statusbillede -->
+<div class="search-area">
+    <div th:replace="~{fragments/searchBarFragment :: searchBar(selectedVehicleId=${session.selectedVehicleId})}"></div>
+    <div th:replace="~{fragments/statusGraphicFragment :: statusGraphic(statusImage=${session.statusImage})}"></div>
 </div>
 
 <div class="line"></div>

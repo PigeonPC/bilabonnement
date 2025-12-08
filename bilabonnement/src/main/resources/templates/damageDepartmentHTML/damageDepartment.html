@@ -1,37 +1,98 @@
+<!-- Damage Department-side: genbruger søge- og statusfragmenter; knapper styres af session-variabler -->
 <!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dataregistrering</title>
-    <!-- CSS Stylesheet-->
-    <link rel="stylesheet" th:href="@{/css/basicStyle.css}" />
+    <meta charset="UTF-8"/>
+    <title>Skadeafdeling</title>
+    <link rel="stylesheet" th:href="@{/css/basicStyle.css}"/>
+    <link rel="stylesheet" th:href="@{/css/seachbarAndGraphic.css}"/>
 </head>
 <body>
 
-<!-- Header som fragment -->
-<div th:replace="fragments/headerFragment :: header"></div>
+<!-- Header -->
+<div th:replace="~{fragments/headerFragment :: header}"></div>
 
-<!-- Søgefelt -->
-<div class="search-container">
-    <input class="search-box" type="text" placeholder="Indtast stelnummer" />
+<!-- Søgebar + statusbillede -->
+<div class="search-area">
+    <div th:replace="~{fragments/searchBarFragment :: searchBar(selectedVehicleId=${session.selectedVehicleId})}"></div>
+    <div th:replace="~{fragments/statusGraphicFragment :: statusGraphic(statusImage=${session.statusImage})}"></div>
 </div>
 
 <div class="line"></div>
 
-<!-- Boks GRID -->
+<!-- DINE BOKSE -->
 <div class="wrapper">
     <div class="box"><h3>Database</h3></div>
-    <div class="box"><h3>Information</h3></div>
-    <div class="box stretched-box"><h3>Klargøring</h3>
+
+    <div class="box">
+        <h3>Information</h3>
+
+<!-- Show when a car is selected -->
+        <div th:if="${selectedCar != null}">
+            <p class="info-list">
+                <li><strong>Mærke/Model:</strong>
+                    <span th:text="${selectedCar.brand}">Brand</span>
+                    <span th:text="${selectedCar.model}">Model</span>
+                </li>
+                <li><strong>Stelnummer:</strong>
+                    <span th:text="${selectedCar.chassisNumber}">CARXXX</span>
+                </li>
+                <li><strong>Udstyrsniveau:</strong>
+                    <span th:text="${selectedCar.equipmentLevel}">Base</span>
+                </li>
+                <li><strong>Kilometertal:</strong>
+                    <span th:text="${selectedCar.mileage}">0</span> km
+                </li>
+            </p>
+        </div>
+
+        <!-- Fallback when no car is selected -->
+        <span class="muted" th:unless="${selectedCar != null}">
+    Vælg en bil for at se information.
+  </span>
+    </div>
+
+
+    <div class="box stretched-box">
+        <h3>Klargøring</h3>
         <a class="box-button" th:href="@{/visMere}">Vis mere</a>
     </div>
-    <div class="box"><h3>Tilstandsrapport</h3>
-        <a class="box-button" th:href="@{/damageReportForm/new}">Vis mere</a>
+
+    <div class="box">
+        <h3>Returneret</h3>
+        <!-- Hvis du vil bruge hasLease til denne boks også, kan du beholde denne logik -->
+        <a class="box-button"
+           th:if="${session.hasLease == true}"
+           th:href="@{'/damageReportForm/new'(vehicleId=${session.selectedVehicleId})}">
+            Vis mere
+        </a>
+        <span class="muted" th:unless="${session.hasLease}">Ingen data</span>
     </div>
-    <div class="box"><h3>Skaderapport</h3>
-        <a class="box-button" th:href="@{/visMere}">Vis mere</a>
+
+    <div class="box">
+        <h3>Skaderapport</h3>
+        <!-- KUN for udlejede biler med lease -->
+        <a class="box-button"
+           th:if="${session.selectedVehicleId != null
+           and session.carStatus != null
+           and #lists.contains({'RENTED','RETURNED','READY_FOR_SALE','SOLD'},
+                               #strings.toUpperCase(session.carStatus))}"
+           th:href="@{'/damageReportForm/view?vehicleId=' + ${session.selectedVehicleId}}">
+            Se skaderapport
+        </a>
+
+        <span class="muted"
+              th:unless="${session.selectedVehicleId != null
+                  and session.carStatus != null
+                  and #lists.contains({'RENTED','RETURNED','READY_FOR_SALE','SOLD'},
+                                      #strings.toUpperCase(session.carStatus))}">
+  Ingen data
+</span>
+
+
+
     </div>
+
 </div>
 
 </body>

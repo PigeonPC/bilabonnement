@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="searchBar(selectedVehicleId)">
+  <form th:action="@{/vehicle/select}" method="get" class="search-container">
+    <input class="search-box"
+           type="text"
+           name="vehicleId"
+           placeholder="Indtast Vognnummer"
+           required pattern="\d+" />
+    <button type="submit">Søg</button>
+  </form>
+</div>
+</body>
+</html>

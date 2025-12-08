@@ -75,20 +75,32 @@ public class DamageReportService {
 // Opdaterer hele rapportens beløb. (skader + km-gebyr) og skriv værdierne ind på objektet.
 
     public void recalc(DamageReport report) {
+
+        // 1) Summer skader
         BigDecimal damageSum = calculateDamageItemSum(report.getDamageItems());
         report.setTotalDamagePrice(damageSum);
 
+        // 2) Hent lease ROBUST via JDBC-helperen (undgår enum-case issues)
         Integer leaseId = report.getLeasingContractId();
-        LeaseContract lease = (leaseId == null) ? null : leaseContractRepo.findById(leaseId.longValue());
+        LeaseContract lease = (leaseId == null)
+                ? null
+                : leaseContractRepo.findOptionalByLeaseId(leaseId).orElse(null);
+
+        // 3) Hent bil og udregn km-baserede felter
         Car car = (lease != null) ? carRepo.findById(lease.getVehicleId()).orElse(null) : null;
-
         int mileage = (car != null) ? car.getMileage() : 0;
-        LeaseContract.SubscriptionType subscription =
-                (lease != null) ? lease.getSubscription() : LeaseContract.SubscriptionType.LIMITED;
 
+        // 4) Sikker subscription (fallback = LIMITED)
+        LeaseContract.SubscriptionType subscription = LeaseContract.SubscriptionType.LIMITED;
+        if (lease != null && lease.getSubscription() != null) {
+            subscription = lease.getSubscription();
+        }
+
+        // 5) Beregn ekstra km-pris og total
         double extraKmPrice = calculateExtraKmPrice(report.getTotalKm(), mileage, subscription);
         report.setTotalPrice(damageSum.add(BigDecimal.valueOf(extraKmPrice)));
     }
+
 
 // Vi bruger persistens for at kunne gemme det, du indtaster i Thymeleaf-formularen,
 // ned i databasen som en opdatering af den samme rapport.
