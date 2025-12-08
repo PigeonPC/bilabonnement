@@ -30,6 +30,9 @@
 <!-- Show when a car is selected -->
         <div th:if="${selectedCar != null}">
             <p class="info-list">
+                <li><strong>Vognummer:</strong>
+                    <span th:text="${selectedCar.vehicleId}"></span>
+                </li>
                 <li><strong>Mærke/Model:</strong>
                     <span th:text="${selectedCar.brand}">Brand</span>
                     <span th:text="${selectedCar.model}">Model</span>

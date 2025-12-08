@@ -26,8 +26,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.URI;
-import java.util.Optional;
 
 @Controller
 public class VehicleSelectionController {
@@ -47,24 +45,29 @@ public String selectByVehicleId(@RequestParam Integer vehicleId,
                                 HttpServletRequest request,
                                 HttpSession session) {
 
-    carRepo.findById(vehicleId).ifPresentOrElse(car -> {
+    var carOpt = carRepo.findById(vehicleId);
+
+    if (carOpt.isPresent()) {
+        var car = carOpt.get();
+        // Gemmer “global state” i SESSION:
         session.setAttribute("selectedVehicleId", car.getVehicleId());
-        session.setAttribute("statusImage", mapStatusToImage(car.getCarStatus()));
-        session.setAttribute("carStatus", car.getCarStatus().name());
-        session.setAttribute("hasLease", leaseRepo.existsByVehicleId(car.getVehicleId()));
-    }, () -> {
+        session.setAttribute("statusImage",       mapStatusToImage(car.getCarStatus()));
+        session.setAttribute("carStatus",         car.getCarStatus().name());
+        session.setAttribute("hasLease",          leaseRepo.existsByVehicleId(car.getVehicleId()));
+    } else {
+        // Nulstil hvis bilen ikke findes
         session.setAttribute("selectedVehicleId", null);
         session.setAttribute("statusImage", "0.png");
-        session.setAttribute("carStatus", null);
-        session.setAttribute("hasLease", false);
-    });
+        session.setAttribute("carStatus",  null);
+        session.setAttribute("hasLease",   false);
+    }
 
 // Simpelt og sikkert redirect:
     String ref = request.getHeader("Referer");
     if (ref != null && ref.startsWith("/") || (ref != null && ref.startsWith(request.getScheme() + "://" + request.getServerName()))) {
 
     }
-    return "redirect:/damageDepartment"; // fast fallback
+    return "redirect:/damageDepartment";
 }
 
 
