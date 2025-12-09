@@ -1,3 +1,4 @@
+
 package com.example.bilabonnement.security;
 
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            CustomSuccessHandler successHandler) throws Exception {
 
+        /* skal tilbage når login skal aktiveres igen
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/css/**").permitAll()
@@ -30,7 +32,21 @@ public class SecurityConfig {
                 .logout(logout -> logout.logoutSuccessUrl("/login"));
 
         return http.build();
+        */
+
+        //Denne del fjernes når login skal virke igen:
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/**").permitAll()   // ALT er frit
+                )
+                .formLogin(form -> form.disable())
+                .logout(logout -> logout.disable());
+
+        return http.build();
     }
+
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -67,3 +83,4 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(admin, skade, data, forretning);
     }
 }
+

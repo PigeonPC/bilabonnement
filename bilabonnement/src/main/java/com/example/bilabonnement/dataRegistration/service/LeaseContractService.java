@@ -56,4 +56,12 @@ public class LeaseContractService {
         return leaseContractRepo.fetchLeaseContractDetailByIdPlusCustomerRenterAndCar(leasingContractId);
     }
 
+    public List<PreSaleTableView> fetchAllPreSaleAgreementsWithCustomerAndCar() {
+        return leaseContractRepo.fetchAllPreSaleAgreementsWithCustomerAndCar();
+    }
+
+    public PreSaleDetailView fetchPreSaleDetailByIdPlusCustomerAndCar(int leasingContractId) {
+        return leaseContractRepo.fetchPreSaleDetailByIdPlusCustomerAndCar(leasingContractId);
+    }
+
 }

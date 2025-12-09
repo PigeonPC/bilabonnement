@@ -93,6 +93,27 @@ public class DataregistrationController {
         return "dataRegistrationHTML/leaseContractDetail";
     }
 
+    //Vis liste over pre Sale agreements med Navn og bil
+    @GetMapping("/dataRegistration/preSales")
+    public String showPreSaleTable(Model model) {
+        List<PreSaleTableView> preSales =
+                leaseContractService.fetchAllPreSaleAgreementsWithCustomerAndCar();
+
+        model.addAttribute("preSales", preSales);
+
+        return "dataRegistrationHTML/preSales";
+    }
+
+    //Vis specifik presale agreement
+    @GetMapping("/dataRegistration/preSales/{id}")
+    public String showPreSaleDetail(@PathVariable int id, Model model) {
+        PreSaleDetailView preSale = leaseContractService.fetchPreSaleDetailByIdPlusCustomerAndCar(id);
+        model.addAttribute("preSale", preSale);
+
+        return "dataRegistrationHTML/preSaleDetail";
+    }
+
+
 
     //Vis liste over biler fra cars tabellen:
     @GetMapping("/dataRegistration/cars")

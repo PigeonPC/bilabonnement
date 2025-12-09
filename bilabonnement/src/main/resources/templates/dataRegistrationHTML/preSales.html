@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forkøbsaftaler</title>
+    <!-- CSS Stylesheet-->
+    <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/dataRegistration.css}">
+</head>
+<body>
+
+<!-- Header som fragment -->
+<div th:replace="fragments/headerFragment :: header"></div>
+
+<div class="tabel-wrapper">
+
+    <div class="tabel-box">
+
+        <div class="top-row">
+            <a class="back-btn" th:href="@{/dataRegistration}">← Tilbage</a>
+        </div>
+
+        <h2>Forkøbsaftaler</h2>
+
+        <table class="booking-table">
+            <thead>
+            <tr>
+                <th>Aftale ID</th>
+                <th>Aftaledato</th>
+                <th>Kunde</th>
+                <th>Bil</th>
+                <th>Afhentningssted</th>
+                <th>Købsdato</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="preSale : ${preSales}">
+                <td th:text="${preSale.preSaleId}"></td>
+                <td th:text="${#dates.format(preSale.preSaleAgreementDate, 'dd-MM-yyyy')}"></td>
+                <td th:text="${preSale.customerName}"></td>
+                <td th:text="${preSale.carModel}"></td>
+                <td th:text="${preSale.pickupLocation}"></td>
+                <td th:text="${#dates.format(preSale.dateOfPurchase, 'dd-MM-yyyy')}"></td>
+                <td>
+                    <a th:href="@{'/dataRegistration/preSales/' + ${preSale.preSaleId}}"
+                       class="box-button">
+                        Se aftale →
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>

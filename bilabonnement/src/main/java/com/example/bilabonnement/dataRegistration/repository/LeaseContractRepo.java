@@ -373,4 +373,101 @@ public class LeaseContractRepo {
     }
 
 
+    // ------------- PRE SALE TABEL OG DETALJEVISNING ------------------- //
+
+
+    public List<PreSaleTableView> fetchAllPreSaleAgreementsWithCustomerAndCar() {
+        String sql = """
+        SELECT
+            psa.pre_sale_id,
+            psa.pre_sale_agreement_date,
+            psa.pickup_location,
+            psa.date_of_purchase,
+            
+            CONCAT(c.first_name, ' ', c.last_name) AS customerName,
+
+            CONCAT(car.brand, ' ', car.model) AS carModel
+
+        FROM pre_sale_agreements psa
+        JOIN customers c ON psa.customer_id = c.customer_id
+        JOIN cars car    ON psa.vehicle_id = car.vehicle_id
+        ORDER BY psa.pre_sale_agreement_date DESC
+        """;
+
+        RowMapper<PreSaleTableView> rowMapper = new BeanPropertyRowMapper<>(PreSaleTableView.class);
+        return template.query(sql, rowMapper);
+    }
+
+    public PreSaleDetailView fetchPreSaleDetailByIdPlusCustomerAndCar(int preSaleId) {
+
+        String sql = """
+        SELECT
+            -- PRE SALE AGREEMENT
+            psa.pre_sale_id,
+            psa.limited_period,
+            psa.pre_sale_agreement_date,
+            psa.pickup_location,
+            psa.km_limit,
+            psa.extra_km_price,
+            psa.pre_sale_agreement_terms,
+            psa.currency,
+            psa.date_of_purchase,
+            psa.customer_id,
+            psa.vehicle_id,
+
+            -- CUSTOMER
+            CONCAT(c.first_name, ' ', c.last_name) AS customerName,
+            c.first_name,
+            c.last_name,
+            c.phone,
+            c.email,
+            c.address,
+            c.zip,
+            c.floor,
+            c.country,
+
+            -- CAR
+            CONCAT(car.brand, ' ', car.model) AS carModel,
+            car.brand,
+            car.model,
+            car.chassis_number,
+            car.equipment_level,
+            car.mileage,
+            car.steel_price,
+            car.registration_tax,
+            car.co2_emission,
+            car.leasing_code,
+            car.irk_code,
+            car.date_of_purchase AS carDateOfPurchase,
+            car.purchase_price,
+
+            -- SENESTE STATUS HISTORY
+            sh.status AS lastStatus,
+            sh.timestamp AS lastStatusTimestamp
+
+        FROM pre_sale_agreements psa
+        JOIN customers c ON psa.customer_id = c.customer_id
+        JOIN cars car ON psa.vehicle_id = car.vehicle_id
+
+        LEFT JOIN status_histories sh
+               ON sh.vehicle_id = car.vehicle_id
+              AND sh.timestamp = (
+                   SELECT MAX(sh2.timestamp)
+                   FROM status_histories sh2
+                   WHERE sh2.vehicle_id = car.vehicle_id
+              )
+
+        WHERE psa.pre_sale_id = ?
+        """;
+
+        RowMapper<PreSaleDetailView> rowMapper =
+                new BeanPropertyRowMapper<>(PreSaleDetailView.class);
+
+        return template.queryForObject(sql, rowMapper, preSaleId);
+    }
+
+
+
+
+
 }
