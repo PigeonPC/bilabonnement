@@ -29,12 +29,6 @@ public class DataregistrationController {
         this.carService = carService;
     }
 
-    @GetMapping("/visMere")
-    public String visMere(Model model) {
-        model.addAttribute("activePage", "visMere");
-        return "visMereSkabelon";
-    }
-
     // Forsiden til dataregistrering
     @GetMapping("/dataRegistration")
     public String showDataregistration(Model model) {

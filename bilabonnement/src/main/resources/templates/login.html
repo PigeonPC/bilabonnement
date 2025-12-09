@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login</title>
+
+    <!-- Samme CSS som dine andre sider -->
+    <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+
+<body>
+<div class="login-header">
+    Bilabonnement.dk
+</div>
+
+<div class="login-wrapper">
+    <div class="box">
+
+        <h3>Login</h3>
+
+        <form th:action="@{/login}" method="post" style="display:flex; flex-direction:column; gap:15px;">
+
+            <input type="text" name="username" placeholder="Brugernavn"
+                   class="login-input" required/>
+
+            <input type="password" name="password" placeholder="Adgangskode"
+                   class="login-input" required/>
+
+            <button type="submit" class="box-button" style="align-self: center;">
+                Login
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
