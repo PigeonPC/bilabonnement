@@ -37,17 +37,6 @@ public class LeaseContractService {
         return leaseContractRepo.findContractByVehicleID(vehicleId);
     }
 
-    public boolean approveLeaseContractByIdAndUpdateCarStatus(int leasingContractId) {
-        return leaseContractRepo.approveLeaseContractByIdAndUpdateCarStatus(leasingContractId);
-    }
-
-    public List<BookingTableView> fetchAllBookingsWithRenterNameAndCarModel() {
-        return leaseContractRepo.fetchAllBookingsWithRenterNameAndCarModel();
-    }
-
-    public BookingDetailView fetchBookingDetailByIdPlusCustomerRenterAndCar(int leasingContractId) {
-        return leaseContractRepo.fetchBookingDetailByIdPlusCustomerRenterAndCar(leasingContractId);
-    }
 
     public List<LeaseContractTableView> fetchAllLeaseContractsWithRenterNameAndCarModel() {
         return leaseContractRepo.fetchAllLeaseContractsWithRenterNameAndCarModel();
@@ -55,14 +44,6 @@ public class LeaseContractService {
 
     public LeaseContractDetailView fetchLeaseContractDetailByIdPlusCustomerRenterAndCar(int leasingContractId) {
         return leaseContractRepo.fetchLeaseContractDetailByIdPlusCustomerRenterAndCar(leasingContractId);
-    }
-
-    public List<PreSaleTableView> fetchAllPreSaleAgreementsWithCustomerAndCar() {
-        return leaseContractRepo.fetchAllPreSaleAgreementsWithCustomerAndCar();
-    }
-
-    public PreSaleDetailView fetchPreSaleDetailByIdPlusCustomerAndCar(int leasingContractId) {
-        return leaseContractRepo.fetchPreSaleDetailByIdPlusCustomerAndCar(leasingContractId);
     }
 
 }

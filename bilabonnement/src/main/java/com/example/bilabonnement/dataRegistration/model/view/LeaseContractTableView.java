@@ -7,7 +7,7 @@ public class LeaseContractTableView {
 
 
     private int leasingContractId;   // leasing_contract_id
-    private Date approvedDate; //approved_date
+    private Date approvedDate;       // approved_date
     private String customerName;     // CONCAT(first_name, ' ', last_name)
     private String carModel;         // CONCAT(brand, ' ', model)
     private Date startDate;          // start_date

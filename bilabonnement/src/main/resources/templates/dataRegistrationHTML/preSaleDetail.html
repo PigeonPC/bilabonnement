@@ -2,7 +2,7 @@
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Forkøbsftale detaljer</title>
+    <title>Forkøbsaftale detaljer</title>
 
     <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
     <link rel="stylesheet" th:href="@{/css/visMereCSS.css}">
@@ -23,13 +23,14 @@
         <!-- Overskrift -->
         <h2>
             Forkøbsaftale ID:
-            <span th:text="${preSale.preSaleId}"></span>
-            - <span th:text="${preSale.customerName}"></span>
+            <span th:text="${preSaleAgreement.preSaleId}"></span>
+            -
+            <span th:text="${customer.firstName + ' ' + customer.lastName}"></span>
         </h2>
 
         <p>
             Aftaledato:
-            <span th:text="${#dates.format(preSale.preSaleAgreementDate, 'dd-MM-yyyy')}"></span>
+            <span th:text="${preSaleAgreement.preSaleAgreementDate}"></span>
         </p>
 
         <!-- PRE-SALE AFTALE -->
@@ -37,47 +38,48 @@
         <table class="detail-table">
             <tr>
                 <th>ID</th>
-                <td th:text="${preSale.preSaleId}"></td>
+                <td th:text="${preSaleAgreement.preSaleId}"></td>
             </tr>
 
             <tr>
                 <th>Begrænset periode</th>
-                <td th:text="${preSale.limitedPeriod ? 'Ja' : 'Nej'}"></td>
+                <td th:text="${preSaleAgreement.limitedPeriod ? 'Ja' : 'Nej'}"></td>
+
             </tr>
 
             <tr>
                 <th>Aftaledato</th>
-                <td th:text="${#dates.format(preSale.preSaleAgreementDate, 'dd-MM-yyyy')}"></td>
+                <td th:text="${preSaleAgreement.preSaleAgreementDate}"></td>
             </tr>
 
             <tr>
                 <th>Afhentningssted</th>
-                <td th:text="${preSale.pickupLocation}"></td>
+                <td th:text="${preSaleAgreement.pickupLocation}"></td>
             </tr>
 
             <tr>
                 <th>KM begrænsning</th>
-                <td th:text="${preSale.kmLimit}"></td>
+                <td th:text="${preSaleAgreement.kmLimit}"></td>
             </tr>
 
             <tr>
                 <th>Pris pr. ekstra km</th>
-                <td th:text="${preSale.extraKmPrice} + ' kr'"></td>
+                <td th:text="${preSaleAgreement.extraKmPrice} + ' kr'"></td>
             </tr>
 
             <tr>
                 <th>Valuta</th>
-                <td th:text="${preSale.currency}"></td>
+                <td th:text="${preSaleAgreement.currency}"></td>
             </tr>
 
             <tr>
                 <th>Købsdato</th>
-                <td th:text="${#dates.format(preSale.dateOfPurchase, 'dd-MM-yyyy')}"></td>
+                <td th:text="${preSaleAgreement.dateOfPurchase}"></td>
             </tr>
 
             <tr>
                 <th>Aftalevilkår</th>
-                <td th:text="${preSale.preSaleAgreementTerms}"></td>
+                <td th:text="${preSaleAgreement.preSaleAgreementTerms}"></td>
             </tr>
         </table>
 
@@ -86,26 +88,26 @@
         <table class="detail-table">
             <tr>
                 <th>Navn</th>
-                <td th:text="${preSale.customerName}"></td>
+                <td th:text="${customer.firstName + ' ' + customer.lastName}"></td>
             </tr>
 
             <tr>
                 <th>Email</th>
-                <td th:text="${preSale.email}"></td>
+                <td th:text="${customer.email}"></td>
             </tr>
 
             <tr>
                 <th>Telefon</th>
-                <td th:text="${preSale.phone}"></td>
+                <td th:text="${customer.phone}"></td>
             </tr>
 
             <tr>
                 <th>Adresse</th>
                 <td>
-                    <span th:text="${preSale.address}"></span><br/>
-                    <span th:text="${preSale.zip}"></span>
-                    <span th:text="${preSale.country}"></span><br/>
-                    <span th:text="${preSale.floor}"></span>
+                    <span th:text="${customer.address}"></span><br/>
+                    <span th:text="${customer.zip}"></span>
+                    <span th:text="${customer.country}"></span><br/>
+                    <span th:text="${customer.floor}"></span>
                 </td>
             </tr>
         </table>
@@ -115,82 +117,82 @@
         <table class="detail-table">
             <tr>
                 <th>Vehicle ID</th>
-                <td th:text="${preSale.vehicleId}"></td>
+                <td th:text="${car.vehicleId}"></td>
             </tr>
 
             <tr>
                 <th>Model</th>
-                <td th:text="${preSale.carModel}"></td>
+                <td th:text="${car.brand + ' ' + car.model}"></td>
             </tr>
 
             <tr>
                 <th>Mærke</th>
-                <td th:text="${preSale.brand}"></td>
+                <td th:text="${car.brand}"></td>
             </tr>
 
             <tr>
                 <th>Modelnavn</th>
-                <td th:text="${preSale.model}"></td>
+                <td th:text="${car.model}"></td>
             </tr>
 
             <tr>
                 <th>Stelnummer</th>
-                <td th:text="${preSale.chassisNumber}"></td>
+                <td th:text="${car.chassisNumber}"></td>
             </tr>
 
             <tr>
                 <th>KM stand</th>
-                <td th:text="${preSale.mileage} + ' km'"></td>
+                <td th:text="${car.mileage} + ' km'"></td>
             </tr>
 
             <tr>
                 <th>Udstyrsniveau</th>
-                <td th:text="${preSale.equipmentLevel}"></td>
+                <td th:text="${car.equipmentLevel}"></td>
             </tr>
 
             <tr>
                 <th>Stålpris</th>
-                <td th:text="${preSale.steelPrice} + ' kr'"></td>
+                <td th:text="${car.steelPrice} + ' kr'"></td>
             </tr>
 
             <tr>
                 <th>Registreringsafgift</th>
-                <td th:text="${preSale.registrationTax} + ' kr'"></td>
+                <td th:text="${car.registrationTax} + ' kr'"></td>
             </tr>
 
             <tr>
                 <th>CO₂</th>
-                <td th:text="${preSale.co2Emission} + ' g/km'"></td>
+                <td th:text="${car.co2Emission} + ' g/km'"></td>
             </tr>
 
             <tr>
                 <th>Leasingkode</th>
-                <td th:text="${preSale.leasingCode}"></td>
+                <td th:text="${car.leasingCode}"></td>
             </tr>
 
             <tr>
                 <th>IRK-kode</th>
-                <td th:text="${preSale.irkCode}"></td>
+                <td th:text="${car.irkCode}"></td>
             </tr>
 
             <tr>
                 <th>Købsdato (bil)</th>
-                <td th:text="${#dates.format(preSale.carDateOfPurchase, 'dd-MM-yyyy')}"></td>
+                <td th:text="${car.dateOfPurchase}"></td>
             </tr>
 
             <tr>
                 <th>Købspris</th>
-                <td th:text="${preSale.purchasePrice} + ' kr'"></td>
+                <td th:text="${car.purchasePrice} + ' kr'"></td>
             </tr>
 
             <tr>
                 <th>Seneste status</th>
-                <td th:text="${preSale.lastStatus}"></td>
+                <td th:text="${lastStatus != null ? lastStatus.status : 'Ingen status'}"></td>
             </tr>
 
             <tr>
                 <th>Statusdato</th>
-                <td th:text="${#dates.format(preSale.lastStatusTimestamp, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${lastStatus != null ? lastStatus.timestamp : ''}"></td>
             </tr>
         </table>
 
