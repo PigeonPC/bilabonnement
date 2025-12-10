@@ -1,219 +1,218 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Skadesrapport</title>
-    <!-- Ekstern styling for formularen -->
+
+    <!-- DINE STYLES (uændret) -->
+    <link rel="stylesheet" th:href="@{/css/basicStyle.css}">
     <link rel="stylesheet" th:href="@{/css/forms/damageReportForm.css}">
+    <link rel="stylesheet" th:href="@{/css/searchBarAndGraphic.css}">
 </head>
 <body>
+
+<!-- Header -->
+<div th:replace="~{fragments/headerFragment :: header}"></div>
+
+<!-- Søgebar + statusgrafik -->
+<div class="search-area">
+    <div th:replace="~{fragments/searchBarFragment :: searchBar(selectedVehicleId=${selectedVehicleId})}"></div>
+    <div th:replace="~{fragments/statusGraphicFragment :: statusGraphic(statusImage=${statusImage})}"></div>
+</div>
+
 <div class="page-wrapper">
-    <!-- Top-overskrift for siden -->
+
     <div class="top-header">Skadesrapport</div>
 
-    <!-- Formularen, der poster til /damageReportForm/save og binder til damageReport-objektet -->
+    <!-- Hele formularen binder til damageReport -->
     <form id="damageForm"
           th:action="@{/damageReportForm/save}"
           th:object="${damageReport}"
           method="post"
           class="damage-form">
 
-        <!-- Skjult primærnøgle: nødvendig for at opdatere (merge) i stedet for at oprette nyt -->
+        <!-- Skjult nøglefelt -->
         <input type="hidden" th:field="*{damageReportId}"/>
 
-        <!-- Basisoplysninger (lease og relateret info) -->
-        <div class="input-wrapper">
-            <span>Lejekontrakt ID</span>
-            <input type="number" th:field="*{leasingContractId}">
+        <!-- ---------- Basisoplysninger ---------- -->
+        <div class="form-grid">
+
+            <div class="input-wrapper">
+                <span>Lejekontrakt ID</span>
+                <input id="leaseId" type="number" th:field="*{leasingContractId}">
+            </div>
+
+            <div class="input-wrapper">
+                <span>Vehicle ID</span>
+                <!-- Kun visning; controller lægger vehicleId i model separat -->
+                <input id="vehicleReadonly" type="text" th:value="${vehicleId}" readonly>
+            </div>
+
+            <div class="input-wrapper">
+                <span>Renter ID</span>
+                <input id="renterReadonly" type="text" th:value="${renterId}" readonly>
+            </div>
+
+            <div class="input-wrapper">
+                <span>Dato for rapport</span>
+                <input id="reportDate" type="date" th:field="*{reportDate}">
+            </div>
+
+            <div class="input-wrapper">
+                <span>Kilometertal</span>
+                <input id="totalKm"
+                       type="number"
+                       th:field="*{totalKm}"
+                       min="0" max="999999" inputmode="numeric"
+                       th:classappend="${kmError != null} ? ' is-invalid' : ''">
+            </div>
         </div>
 
-        <div class="input-wrapper">
-            <span>Vehicle ID</span>
-            <!-- Læsefelt fra modelattributter (beregnet i controller) -->
-            <input type="text" th:value="${vehicleId}" readonly>
-        </div>
+        <div class="error" th:if="${kmError != null}" th:text="${kmError}"></div>
 
-        <div class="input-wrapper">
-            <span>Renter ID</span>
-            <input type="text" th:value="${renterId}" readonly>
-        </div>
-
-        <div class="input-wrapper">
-            <span>Dato for rapport</span>
-            <!-- Binder til LocalDate i modellen -->
-            <input type="date" th:field="*{reportDate}">
-        </div>
-
-        <!-- Kilometertal (valideres i controlleren; viser fejltekst under feltet) -->
-        <div class="input-wrapper">
-            <span>Kilometertal</span>
-            <input type="number"
-                   th:field="*{totalKm}"
-                   min="0" max="999999" inputmode="numeric"
-                   th:classappend="${kmError != null} ? ' is-invalid' : ''">
-            <!-- Fejlbesked for km (vises kun hvis kmError er sat i model) -->
-            <div class="error" th:if="${kmError != null}" th:text="${kmError}"></div>
-        </div>
-
-        <!-- Skadessektion (liste af skader, kan tilføjes/fjernes dynamisk) -->
+        <!-- ---------- Skader (liste) ---------- -->
         <div class="damage-section-box">
             <h3 class="damage-title">Skader</h3>
 
-            <!-- Hver skaderække binder til damageItems[i] -->
-            <div class="damage-list" th:each="item, iter : *{damageItems}">
-                <div class="damage-row">
+            <!-- Kolonne-overskrifter (én række) -->
+            <div class="damage-row damage-header">
+                <div class="damage-field id"><strong>Nr.</strong></div>
+                <div class="damage-field description"><strong>Beskrivelse</strong></div>
+                <div class="damage-field price"><strong>Pris</strong></div>
+                <div class="damage-field deleteItem"><strong>Slet</strong></div>
+            </div>
 
-                    <!-- Visuelt løbenummer -->
+            <!-- Eksisterende skader + den tomme indtastningsrække (controller skal altid tilføje mindst én tom) -->
+            <div class="damage-list" th:if="*{damageItems} != null">
+                <div class="damage-row" th:each="item, iter : *{damageItems}">
+
+                    <!-- Skjult item-id (null = ny/ikke gemt endnu) -->
+                    <input type="hidden" th:field="*{damageItems[__${iter.index}__].damageItemId}"/>
+
+                    <!-- Nr. (read-only, blot visning) -->
                     <div class="damage-field id">
-                        <label>Nr.</label>
                         <input type="text" th:value="${iter.index + 1}" readonly>
                     </div>
 
-                    <!-- Skjult item-id (krævet for korrekt update/merge af eksisterende rækker) -->
-                    <input type="hidden" th:field="*{damageItems[__${iter.index}__].damageItemId}"/>
-
-                    <!-- Beskrivelse af skade -->
+                    <!-- Beskrivelse -->
                     <div class="damage-field description">
-                        <label>Beskrivelse</label>
-                        <input type="text" th:field="*{damageItems[__${iter.index}__].description}">
+                        <input type="text"
+                               th:field="*{damageItems[__${iter.index}__].description}">
                     </div>
 
-                    <!-- Prisfelt (valideres i controlleren; samlet fejl vises nederst i boksen) -->
+                    <!-- Pris -->
                     <div class="damage-field price">
-                        <label>Pris</label>
                         <input type="number"
                                th:field="*{damageItems[__${iter.index}__].damageItemPrice}"
                                min="0" step="0.01" inputmode="decimal">
                     </div>
 
-                    <!-- Fjern én skaderække (klient-side) -->
-                    <button type="button"
-                            class="remove-btn"
-                            onclick="removeRow(this)"
-                            aria-label="Fjern">−</button>
+                    <!-- Slet-kolonne: ren checkbox uden farver/labels -->
+                    <!-- Vi binder IKKE til model (for at undgå krav om ekstra felt) -->
+                    <!-- I stedet sender vi indeks/id som alm. request-param, som controlleren selv kan rense efter. -->
+                    <div class="damage-field deleteItem" style="align-items:center;justify-content:center;">
+                        <!-- Hvis eksisterende række har id → slet efter id -->
+                        <input th:if="${item.damageItemId != null}"
+                               type="checkbox"
+                               name="deleteIds"
+                               th:value="${item.damageItemId}"/>
+
+                        <!-- Hvis ny (ingen id endnu) → slet efter indeks -->
+                        <input th:if="${item.damageItemId == null}"
+                               type="checkbox"
+                               name="deleteNewIndexes"
+                               th:value="${iter.index}"/>
+                    </div>
                 </div>
             </div>
 
-            <!-- Tilføj ny skaderække (klient-side) -->
-            <button class="add-btn" type="button"
-                    onclick="
-                      const list = this.closest('.damage-section-box').querySelector('.damage-list');
-                      const idx  = list.querySelectorAll('.damage-row').length;
-                      const row  = document.createElement('div');
-                      row.className='damage-row';
-                      row.innerHTML =
-                        `<div class='damage-field id'><label>Nr.</label><input type='text' value='${idx+1}' readonly></div>
-                         <input type='hidden' name='damageItems[${idx}].damageItemId' value=''/>
-                         <div class='damage-field description'><label>Beskrivelse</label>
-                           <input name='damageItems[${idx}].description' type='text'></div>
-                         <div class='damage-field price'><label>Pris</label>
-                           <input name='damageItems[${idx}].damageItemPrice' type='number' min='0' step='0.01' inputmode='decimal'></div>
-                         <button type='button' class='remove-btn' onclick='removeRow(this)' aria-label='Fjern'>−</button>`;
-                      list.appendChild(row);
-                      reindexRows();  /* Opdater navne-indekser så bindingen passer */
-                    "
-                    aria-label="Tilføj">+</button>
-
-            <!-- Felt der viser samlet pris for skader (beregnes i service/recalc og bindes hertil) -->
+            <!-- Summen af skader (readonly i UI, men bundet i model) -->
             <div class="input-wrapper">
                 <span>Pris i alt (skader)</span>
-                <input type="number" th:field="*{totalDamagePrice}" readonly>
+                <input id="totalDamagePrice" type="number" th:value="*{totalDamagePrice}" readonly disabled>
             </div>
 
-            <!-- Samlet pris-fejl (vises kun hvis priceError er sat i model) -->
             <div class="error" th:if="${priceError != null}" th:text="${priceError}"></div>
         </div>
 
-        <!-- Afledte felter (beregnet i controller/service) -->
-        <div class="input-wrapper">
-            <span>Kørte kilometer</span>
-            <input type="number" th:value="${drivenKm}" readonly>
+        <!-- Tip-tekst: forklar “Gem” (ligger under skades-afsnittet) -->
+        <p class="hint-text" style="margin: 0 0 20px; font-size: 0.95rem;">
+            Tip: Efter du har tilføjet, redigeret eller markeret skader til sletning, skal du trykke
+            <strong>Gem</strong> for at se den opdaterede rapport og for at kunne tilføje flere skader.
+        </p>
+
+        <!-- ---------- Afledte felter ---------- -->
+        <div class="form-grid">
+            <div class="input-wrapper">
+                <span>Kørte kilometer</span>
+                <input id="drivenKm" type="number" th:value="${drivenKm}" readonly>
+            </div>
+
+            <div class="input-wrapper">
+                <span>Pris for ekstra km</span>
+                <input id="extraKmPrice" type="number" th:value="${extraKmPrice}" readonly>
+            </div>
+
+            <div class="input-wrapper">
+                <span>Pris i alt</span>
+                <input id="totalPrice" type="number" th:field="*{totalPrice}" readonly>
+            </div>
         </div>
 
-        <div class="input-wrapper">
-            <span>Pris for ekstra km</span>
-            <input type="number" th:value="${extraKmPrice}" readonly>
+        <!-- ---------- Betalt-status ---------- -->
+        <div class="paid-section" style="margin-top: 10px;">
+            <span>Betalt?</span>
+            <label>
+                <input type="radio" th:field="*{paidStatus}" value="true"> Ja
+            </label>
+            <label>
+                <input type="radio" th:field="*{paidStatus}" value="false"> Nej
+            </label>
         </div>
 
-        <div class="input-wrapper">
-            <span>Pris i alt</span>
-            <input type="number" th:field="*{totalPrice}" readonly>
+        <!-- ---------- Sen aflevering (200 kr ekstra) ---------- -->
+        <div class="paid-section" style="margin-top: 10px;">
+            <span>Afleveret for sent?</span>
+            <label>
+                <input type="radio" th:field="*{lateReturn}" value="true"> Ja
+            </label>
+            <label>
+                <input type="radio" th:field="*{lateReturn}" value="false"> Nej
+            </label>
+
+            <!-- Kun en lille visuel note når lateReturn = true -->
+            <div th:if="*{lateReturn}" class="input-wrapper" style="margin-top:10px;">
+                <span>Sen aflevering (ekstra mdr. reg.afgift)</span>
+                <input type="text" value="200.00" readonly />
+            </div>
         </div>
 
-        <!-- Betalt-status (binder til transient felt paidStatus, som spejler hasPayed) -->
-        <div class="paid-section">
-            <label>Betalt?</label>
-            <label><input type="radio" th:field="*{paidStatus}" value="true"> Ja</label>
-            <label><input type="radio" th:field="*{paidStatus}" value="false"> Nej</label>
+        <!-- ---------- Knapper (klassenavne matcher din CSS) --------- -->
+        <div class="action-buttons">
+            <!-- Tilbage: GET til /damageDepartment -->
+            <button class="back" type="submit"
+                    formmethod="get"
+                    th:formaction="@{/damageDepartment}">
+                Tilbage
+            </button>
+
+            <!-- Gem: POST til /damageReportForm/save (formens action) -->
+            <button class="save" type="submit">Gem</button>
+
+            <!-- Opret ny: GET til /damageReportForm/new?vehicleId=... -->
+            <button class="delete" type="submit"
+                    formmethod="get"
+                    th:formaction="@{/damageReportForm/new(vehicleId=${vehicleId})}">
+                Opret ny
+            </button>
         </div>
+
+        <!-- Info-flag -->
+        <div class="notice" th:if="${noLeaseForVehicle}">Ingen lejekontrakt for denne bil.</div>
+        <div class="notice" th:if="${noReport}">Ingen eksisterende skadesrapport – du kan oprette én nu.</div>
+
     </form>
-
-    <!-- Handlingsknapper (tilbage, gem, opret ny) -->
-    <div class="action-buttons">
-        <!-- Tilbage: holder din styling (button) men navigerer til oversigten -->
-        <button class="back" type="button"
-                th:onclick="'window.location.href=\'' + @{/damageDepartment} + '\';'">
-            Tilbage
-        </button>
-
-        <!-- Gem: poster formularen -->
-        <button class="save" type="submit" form="damageForm">Gem</button>
-
-        <!-- Opret ny / genindlæs tom formular (med leaseId hvis sat) -->
-        <form th:action="@{/damageReportForm/new}" method="get" style="display:inline">
-            <input type="hidden" name="leaseId" th:value="*{leasingContractId}" />
-            <button class="delete" type="submit">Opret Ny</button>
-        </form>
-    </div>
-
 </div>
 
-<!-- === Server-renderet fejlboks (vises kun hvis kmError eller priceError er sat) === -->
-<div th:if="${kmError != null or priceError != null}" class="modal">
-    <div class="modal-content">
-        <h3>Ugyldigt input</h3>
-        <ul class="error-list">
-            <li th:if="${kmError != null}" th:text="${kmError}"></li>
-            <li th:if="${priceError != null}" th:text="${priceError}"></li>
-        </ul>
-
-        <!-- OK-knap: loader samme formular igen (bevarer leaseId så info kan vises) -->
-        <form th:action="@{/damageReportForm/new}" method="get">
-            <input type="hidden" name="leaseId" th:value="*{leasingContractId}"/>
-            <button type="submit" class="save">OK</button>
-        </form>
-    </div>
-</div>
-
-<!-- === Reindex-logic (holder navne-indekser for items korrekte ved tilføj/slet) === -->
-<script>
-    function reindexRows() {
-        const rows = document.querySelectorAll('.damage-section-box .damage-list .damage-row');
-        rows.forEach((row, i) => {
-            // skjult id
-            const hid = row.querySelector("input[type='hidden'][name^='damageItems['][name$='.damageItemId']");
-            if (hid) hid.name = `damageItems[${i}].damageItemId`;
-            // beskrivelse
-            const desc = row.querySelector("input[name^='damageItems['][name$='.description']");
-            if (desc) desc.name = `damageItems[${i}].description`;
-            // pris
-            const price = row.querySelector("input[name^='damageItems['][name$='.damageItemPrice']");
-            if (price) price.name = `damageItems[${i}].damageItemPrice`;
-            // visuelt nr.
-            const nr = row.querySelector(".damage-field.id input[readonly]");
-            if (nr) nr.value = i + 1;
-        });
-    }
-
-    function removeRow(btn) {
-        const row = btn.closest('.damage-row');
-        if (!row) return;
-        row.remove();
-        reindexRows(); // opdater indeks efter sletning
-    }
-
-    // Sørg for reindex lige inden submit (hvis der er 'huller' i index)
-    document.getElementById('damageForm').addEventListener('submit', reindexRows);
-</script>
 </body>
 </html>

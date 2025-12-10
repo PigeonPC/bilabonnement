@@ -154,7 +154,7 @@ body {
     display: flex;
     justify-content: space-around;
     margin-top: 25px;
-    gap: 40px;
+    gap: 30px;
 }
 
 .action-buttons button {

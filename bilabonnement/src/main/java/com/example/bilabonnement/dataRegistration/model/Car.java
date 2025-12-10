@@ -48,13 +48,6 @@ public class Car {
     @Column(name = "purchase_price")
     private Double purchasePrice;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "car_status")
-    private CarStatus carStatus;
-
-    @Column(name = "status_change_timestamp")
-    private LocalDateTime statusChangeTimestamp;
-
 
     // ------------------------------
     // GETTERS & SETTERS
@@ -164,19 +157,4 @@ public class Car {
         this.purchasePrice = purchasePrice;
     }
 
-    public CarStatus getCarStatus() {
-        return carStatus;
-    }
-
-    public void setCarStatus(CarStatus carStatus) {
-        this.carStatus = carStatus;
-    }
-
-    public LocalDateTime getStatusChangeTimestamp() {
-        return statusChangeTimestamp;
-    }
-
-    public void setStatusChangeTimestamp(LocalDateTime statusChangeTimestamp) {
-        this.statusChangeTimestamp = statusChangeTimestamp;
-    }
 }

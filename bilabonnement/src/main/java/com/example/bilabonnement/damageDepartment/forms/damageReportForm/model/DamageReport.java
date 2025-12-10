@@ -37,8 +37,10 @@ public class DamageReport {
     @Column(name = "leasing_contract_id")
     private Integer leasingContractId;
 
+
     @OneToMany(mappedBy = "damageReport", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DamageItem> damageItems = new ArrayList<>();
+
 
 
 // Vi laver en boolean til at se om rapporten er betalt.
@@ -72,4 +74,5 @@ public class DamageReport {
     public void setDamageItems(List<DamageItem> damageItems) { this.damageItems = damageItems; }
     public Boolean getPaidStatus() { return paidStatus; }
     public void setPaidStatus(Boolean paidStatus) { this.paidStatus = paidStatus; }
+
 }

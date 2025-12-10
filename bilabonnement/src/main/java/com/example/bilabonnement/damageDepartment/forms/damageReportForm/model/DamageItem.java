@@ -25,6 +25,10 @@ public class DamageItem {
     @JoinColumn(name = "damage_report_id", nullable = false)
     private DamageReport damageReport;
 
+    /** Formular-flag: hvis sat af brugeren, skal rækken slettes ved gem. */
+    @Transient
+    private Boolean markedForDelete;
+
 
 
 // Getters/setters
@@ -37,4 +41,10 @@ public class DamageItem {
     public void setDamageItemPrice(BigDecimal damageItemPrice) { this.damageItemPrice = damageItemPrice; }
     public DamageReport getDamageReport() { return damageReport; }
     public void setDamageReport(DamageReport damageReport) { this.damageReport = damageReport; }
+    public Boolean getMarkedForDelete() {
+        return markedForDelete;
+    }
+    public void setMarkedForDelete(Boolean markedForDelete) {
+        this.markedForDelete = markedForDelete;
+    }
 }

@@ -72,8 +72,7 @@ public class DamageReportService {
         return sum;
     }
 
-// Opdaterer hele rapportens beløb. (skader + km-gebyr) og skriv værdierne ind på objektet.
-
+    // Opdaterer hele rapportens beløb. (skader + km-gebyr + evt. sen aflevering)
     public void recalc(DamageReport report) {
 
         // 1) Summer skader
@@ -96,10 +95,18 @@ public class DamageReportService {
             subscription = lease.getSubscription();
         }
 
-        // 5) Beregn ekstra km-pris og total
+        // 5) Beregn total: skader + km-gebyr
         double extraKmPrice = calculateExtraKmPrice(report.getTotalKm(), mileage, subscription);
-        report.setTotalPrice(damageSum.add(BigDecimal.valueOf(extraKmPrice)));
+        BigDecimal total = damageSum.add(BigDecimal.valueOf(extraKmPrice));
+
+        // 6) NYT: læg 200 kr. oveni hvis afleveret for sent
+        if (Boolean.TRUE.equals(report.getLateReturn())) {
+            total = total.add(new BigDecimal("200"));
+        }
+
+        report.setTotalPrice(total);
     }
+
 
 
 // Vi bruger persistens for at kunne gemme det, du indtaster i Thymeleaf-formularen,
@@ -117,17 +124,24 @@ public class DamageReportService {
             report.setHasPayed(null);
         }
 
-        // 1) Filter tomme placeholder-rækker
+        // 1) Filter tomme placeholder-rækker + dem, der er markeret til slet
         List<DamageItem> items = report.getDamageItems();
         if (items == null) items = new ArrayList<>();
         List<DamageItem> clean = new ArrayList<>();
         for (DamageItem it : items) {
             if (it == null) continue;
+
+            // Slet-markering vinder altid
+            if (Boolean.TRUE.equals(it.getMarkedForDelete())) continue;
+
             boolean emptyDesc  = it.getDescription() == null || it.getDescription().isBlank();
             boolean emptyPrice = it.getDamageItemPrice() == null;
+            // Tom både beskrivelse og pris → ignorer (nyt “slot” uden indhold)
             if (emptyDesc && emptyPrice) continue;
+
             clean.add(it);
         }
+
 
 // 2) Afbryd cascade før save af parent
         report.setDamageItems(new ArrayList<>());
