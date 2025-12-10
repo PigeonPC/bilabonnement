@@ -23,10 +23,9 @@ import java.util.List;
 public class DataregistrationController {
 
     private final LeaseContractService leaseContractService;
-
     private final CarService carService;
     private final PreSaleService preSaleService;
-    private final BookingService bookingService; // tilføj som felt
+    private final BookingService bookingService;
 
     public DataregistrationController(LeaseContractService leaseContractService,
                                       CarService carService,
@@ -107,9 +106,19 @@ public class DataregistrationController {
 
     //Vis specifik lejekontrakt
     @GetMapping("/dataRegistration/leaseContracts/{id}")
-    public String showLeaseContractDetail(@PathVariable int id, Model model) {
-        LeaseContractDetailView leaseContract = leaseContractService.fetchLeaseContractDetailByIdPlusCustomerRenterAndCar(id);
+    public String showLeaseContractDetail(@PathVariable("id") int leasingContractId, Model model) {
+
+        LeaseContract leaseContract = leaseContractService.getLeaseContract(leasingContractId);
+        Renter renter = leaseContractService.getRenterForLease(leaseContract);
+        Customer customer = leaseContractService.getCustomerForRenter(renter);
+        Car car = leaseContractService.getCarForLease(leaseContract);
+        StatusHistory lastStatus = leaseContractService.getLatestStatusForLease(leaseContract);
+
         model.addAttribute("leaseContract", leaseContract);
+        model.addAttribute("renter", renter);
+        model.addAttribute("customer", customer);
+        model.addAttribute("car", car);
+        model.addAttribute("lastStatus", lastStatus);
 
         return "dataRegistrationHTML/leaseContractDetail";
     }

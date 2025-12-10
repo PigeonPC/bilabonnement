@@ -12,26 +12,27 @@
 <body>
 
 <!-- Header -->
-<div th:replace="fragments/headerFragment :: header"></div>
+<div th:replace="~{fragments/headerFragment :: header}"></div>
 
 <!-- Container -->
 <div class="vismere-wrapper">
     <div class="vismere-box">
 
         <!-- Tilbage-knap -->
-        <a class="back-btn" th:href="@{/dataRegistration/leaseContracts}">← Tilbage til lejekontrakter</a>
+        <a class="back-btn" th:href="@{/dataRegistration/leaseContracts}">
+            ← Tilbage til lejekontrakter
+        </a>
 
         <!-- Øverste overskrift -->
         <h2>
-            Kontrakt ID:
+            Lejekontrakt ID:
             <span th:text="${leaseContract.leasingContractId}"></span>
-            - <span th:text="${leaseContract.customerName}"></span>
+            -
+            <span th:text="${customer.firstName + ' ' + customer.lastName}"></span>
         </h2>
         <p>
-            Godkendt:
-            <span th:text="${leaseContract.approvedDate != null
-                           ? #dates.format(leaseContract.approvedDate, 'dd-MM-yyyy')
-                           : 'Ikke godkendt'}"></span>
+            Oprettet:
+            <span th:text="${#dates.format(leaseContract.leaseContractDate, 'dd-MM-yyyy')}"></span>
         </p>
 
         <!-- KONTRAKT-DETALJER -->
@@ -86,48 +87,48 @@
         <table class="detail-table">
             <tr>
                 <th>Kunde ID</th>
-                <td th:text="${leaseContract.customerId}"></td>
+                <td th:text="${customer.customerId}"></td>
             </tr>
             <tr>
                 <th>Navn</th>
-                <td th:text="${leaseContract.customerName}"></td>
+                <td th:text="${customer.firstName + ' ' + customer.lastName}"></td>
             </tr>
             <tr>
                 <th>Fornavn</th>
-                <td th:text="${leaseContract.firstName}"></td>
+                <td th:text="${customer.firstName}"></td>
             </tr>
             <tr>
                 <th>Efternavn</th>
-                <td th:text="${leaseContract.lastName}"></td>
+                <td th:text="${customer.lastName}"></td>
             </tr>
             <tr>
                 <th>Kørekortnr.</th>
-                <td th:text="${leaseContract.licenseNumber}"></td>
+                <td th:text="${customer.licenseNumber}"></td>
             </tr>
             <tr>
                 <th>Email</th>
-                <td th:text="${leaseContract.email}"></td>
+                <td th:text="${customer.email}"></td>
             </tr>
             <tr>
                 <th>Telefon</th>
-                <td th:text="${leaseContract.phone}"></td>
+                <td th:text="${customer.phone}"></td>
             </tr>
             <tr>
                 <th>Adresse</th>
                 <td>
-                    <span th:text="${leaseContract.address}"></span><br/>
-                    <span th:text="${leaseContract.zip}"></span>
-                    <span th:text="${leaseContract.country}"></span><br/>
-                    <span th:text="${leaseContract.floor}"></span>
+                    <span th:text="${customer.address}"></span><br/>
+                    <span th:text="${customer.zip}"></span>
+                    <span th:text="${customer.country}"></span><br/>
+                    <span th:text="${customer.floor}"></span>
                 </td>
             </tr>
             <tr>
                 <th>CPR / SSN</th>
-                <td th:text="${leaseContract.ssn}"></td>
+                <td th:text="${renter.ssn}"></td>
             </tr>
             <tr>
                 <th>Credit score</th>
-                <td th:text="${leaseContract.creditScore}"></td>
+                <td th:text="${renter.creditScore}"></td>
             </tr>
         </table>
 
@@ -136,70 +137,68 @@
         <table class="detail-table">
             <tr>
                 <th>Vehicle ID</th>
-                <td th:text="${leaseContract.vehicleId}"></td>
+                <td th:text="${car.vehicleId}"></td>
             </tr>
             <tr>
                 <th>Model (kort)</th>
-                <td th:text="${leaseContract.carModel}"></td>
+                <td th:text="${car.brand + ' ' + car.model}"></td>
             </tr>
             <tr>
                 <th>Mærke</th>
-                <td th:text="${leaseContract.brand}"></td>
+                <td th:text="${car.brand}"></td>
             </tr>
             <tr>
                 <th>Modelnavn</th>
-                <td th:text="${leaseContract.model}"></td>
+                <td th:text="${car.model}"></td>
             </tr>
             <tr>
                 <th>Stelnummer</th>
-                <td th:text="${leaseContract.chassisNumber}"></td>
+                <td th:text="${car.chassisNumber}"></td>
             </tr>
             <tr>
                 <th>KM stand</th>
-                <td th:text="${leaseContract.mileage} + ' km'"></td>
+                <td th:text="${car.mileage} + ' km'"></td>
             </tr>
             <tr>
                 <th>Udstyrsniveau</th>
-                <td th:text="${leaseContract.equipmentLevel}"></td>
+                <td th:text="${car.equipmentLevel}"></td>
             </tr>
             <tr>
                 <th>Stålpris</th>
-                <td th:text="${#numbers.formatDecimal(leaseContract.steelPrice, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
+                <td th:text="${#numbers.formatDecimal(car.steelPrice, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
             </tr>
             <tr>
                 <th>Registreringsafgift</th>
-                <td th:text="${#numbers.formatDecimal(leaseContract.registrationTax, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
+                <td th:text="${#numbers.formatDecimal(car.registrationTax, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
             </tr>
             <tr>
                 <th>CO₂-udledning</th>
-                <td th:text="${leaseContract.co2Emission} + ' g/km'"></td>
+                <td th:text="${car.co2Emission} + ' g/km'"></td>
             </tr>
             <tr>
                 <th>Leasingkode</th>
-                <td th:text="${leaseContract.leasingCode}"></td>
+                <td th:text="${car.leasingCode}"></td>
             </tr>
             <tr>
                 <th>IRK-kode</th>
-                <td th:text="${leaseContract.irkCode}"></td>
+                <td th:text="${car.irkCode}"></td>
             </tr>
             <tr>
                 <th>Købsdato</th>
-                <td th:text="${#dates.format(leaseContract.dateOfPurchase, 'dd-MM-yyyy')}"></td>
+                <td th:text="${#temporals.format(car.dateOfPurchase, 'dd-MM-yyyy')}"></td>
             </tr>
             <tr>
                 <th>Købspris</th>
-                <td th:text="${#numbers.formatDecimal(leaseContract.purchasePrice, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
+                <td th:text="${#numbers.formatDecimal(car.purchasePrice, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
             </tr>
             <tr>
                 <th>Seneste status</th>
-                <td th:text="${leaseContract.lastStatus != null
-                             ? leaseContract.lastStatus
-                             : 'Ingen status'}"></td>
+                <td th:text="${lastStatus != null ? lastStatus.status : 'Ingen status'}"></td>
             </tr>
             <tr>
                 <th>Statusdato</th>
-                <td th:text="${leaseContract.lastStatusTimestamp != null
-                             ? #dates.format(leaseContract.lastStatusTimestamp, 'dd-MM-yyyy HH:mm')
+                <td th:text="${lastStatus != null
+                             ? #temporals.format(lastStatus.timestamp, 'dd-MM-yyyy HH:mm')
                              : 'Ingen statusdato'}"></td>
             </tr>
         </table>
