@@ -88,6 +88,19 @@ public class LeaseContractRepo {
         return true;
     }
 
+    // AFVIS / SLET BOOKING (kun hvis den ikke er godkendt)
+    public boolean deleteBookingById(int leasingContractId) {
+        String sql = """
+            DELETE FROM lease_contracts
+            WHERE leasing_contract_id = ?
+              AND approved_date IS NULL
+            """;
+
+        int rows = template.update(sql, leasingContractId);
+        return rows > 0;   // true hvis noget blev slettet
+    }
+
+
     //VIS TABEL MED BOOKINGER plus lidt om customer og bil
     public List<BookingTableView> fetchAllBookingsWithRenterNameAndCarModel() {
         String sql = """

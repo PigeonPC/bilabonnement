@@ -4,35 +4,70 @@
     margin-top: 0;
 }
 
+
+/* START: redigerer billedet af bilens status på detaljesiden. */
 .status-image-container {
     width: 100%;
     display: flex;
     justify-content: center; /* centrerer billedet */
-
 }
-
 .status-image {
     width: 70%;     /* fylder 75% af containerens bredde */
     height: auto;   /* bevarer korrekt proportion */
 }
 
+
+/* En række, der gør det muligt at vise tilbage-knappen til venstre */
 .top-row {
     width: 100%;
     display: flex;
     justify-content: flex-start; /* knap til venstre */
     margin-bottom: 15px;
 }
-
+/* En række, der gør det muligt at vise knapper i bunden til højre */
 .bottom-row {
     width: 100%;
     display: flex;
     justify-content: flex-end; /* knap til højre */
     margin-bottom: 15px;
 }
-
 .bottom-row a {
     font-size: 20px;
 }
+
+
+/* knapper i bunden på detaljesiden */
+/* GRØN godkend knap */
+.bottom-row button {
+    font-size: 17px;
+    margin: 7px;
+    background-color: rgba(0, 171, 55, 0.89);
+}
+/* Farlig RØD slet-knap */
+.box-button.danger {
+    background-color: #d90000;
+}
+
+/* Success / Error beskeder der vises efter godkendt/afvist booking */
+.error-box,
+.success-box {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 15px; /* ikke 400px 😉 */
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+.success-box {
+    background-color: #e8f5e9;
+    border: 1px solid #66bb6a;
+    color: #2e7d32;
+}
+.error-box {
+    background-color: #ffebee;
+    border: 1px solid #e57373;
+    color: #c62828;
+}
+
 
 /* Tilbage knap */
 .back-btn {
@@ -48,12 +83,12 @@
     transition: background 0.2s ease;
     align-items: flex-end;
 }
-
 .back-btn:hover {
     background: #006F85;
 }
 
 
+/* -------- Booking/LeaseContr/Presale TABEL STYLING -------- */
 /* H2 kun inde i tabel-boksen */
 .tabel-box h2 {
     margin-top: 5px;
@@ -82,9 +117,6 @@
     flex-direction: column;
     align-items: center;   /* centrerer horisontalt */
 }
-
-
-/* -------- BOOKING TABLE STYLING -------- */
 
 /* Knap inde i booking-tabel */
 .booking-table .table-button {
@@ -134,7 +166,7 @@
 }
 
 
-/* -------------- BookingDetail ------------- */
+/* -------------- Booking/LeaseContr/Presale DETAIL ------------- */
 .detail-table {
     width: 100%;
     border-collapse: collapse;

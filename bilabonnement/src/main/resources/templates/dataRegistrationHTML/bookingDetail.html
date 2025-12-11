@@ -30,13 +30,13 @@
         <!-- Øverste overskrift -->
         <h2>
             Booking ID:
-            <span th:text="${leaseContract.leasingContractId}"></span>
+            <span th:text="${booking.leasingContractId}"></span>
             -
             <span th:text="${customer.firstName + ' ' + customer.lastName}"></span>
         </h2>
         <p>
             Oprettet:
-            <span th:text="${#dates.format(leaseContract.leaseContractDate, 'dd-MM-yyyy')}"></span>
+            <span th:text="${#dates.format(booking.leaseContractDate, 'dd-MM-yyyy')}"></span>
         </p>
 
         <!-- BOOKING-DETALJER -->
@@ -44,39 +44,39 @@
         <table class="detail-table">
             <tr>
                 <th>Booking ID</th>
-                <td th:text="${leaseContract.leasingContractId}"></td>
+                <td th:text="${booking.leasingContractId}"></td>
             </tr>
             <tr>
                 <th>Lejekontraktvilkår</th>
-                <td th:text="${leaseContract.leasingContractTerms}"></td>
+                <td th:text="${booking.leasingContractTerms}"></td>
             </tr>
             <tr>
                 <th>Startdato</th>
-                <td th:text="${#dates.format(leaseContract.startDate, 'dd-MM-yyyy')}"></td>
+                <td th:text="${#dates.format(booking.startDate, 'dd-MM-yyyy')}"></td>
             </tr>
             <tr>
                 <th>Slutdato</th>
-                <td th:text="${#dates.format(leaseContract.endDate, 'dd-MM-yyyy')}"></td>
+                <td th:text="${#dates.format(booking.endDate, 'dd-MM-yyyy')}"></td>
             </tr>
             <tr>
                 <th>Pris pr. måned</th>
-                <td th:text="${#numbers.formatDecimal(leaseContract.rentalPrice, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
+                <td th:text="${#numbers.formatDecimal(booking.rentalPrice, 0, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
             </tr>
             <tr>
                 <th>Abonnement</th>
-                <td th:text="${leaseContract.subscription}"></td>
+                <td th:text="${booking.subscription}"></td>
             </tr>
             <tr>
                 <th>Godkendt dato</th>
-                <td th:text="${leaseContract.approvedDate != null ? #dates.format(leaseContract.approvedDate, 'dd-MM-yyyy HH:mm') : 'Ikke godkendt'}"></td>
+                <td th:text="${booking.approvedDate != null ? #dates.format(booking.approvedDate, 'dd-MM-yyyy HH:mm') : 'Ikke godkendt'}"></td>
             </tr>
             <tr>
                 <th>Depositum betalt</th>
-                <td th:text="${leaseContract.depositPayedDate != null ? #dates.format(leaseContract.depositPayedDate, 'dd-MM-yyyy HH:mm') : 'Ikke betalt'}"></td>
+                <td th:text="${booking.depositPayedDate != null ? #dates.format(booking.depositPayedDate, 'dd-MM-yyyy HH:mm') : 'Ikke betalt'}"></td>
             </tr>
             <tr>
                 <th>Fuldt beløb betalt</th>
-                <td th:text="${leaseContract.fullAmountPayedDate != null ? #dates.format(leaseContract.fullAmountPayedDate, 'dd-MM-yyyy HH:mm') : 'Ikke betalt'}"></td>
+                <td th:text="${booking.fullAmountPayedDate != null ? #dates.format(booking.fullAmountPayedDate, 'dd-MM-yyyy HH:mm') : 'Ikke betalt'}"></td>
             </tr>
         </table>
 
@@ -200,10 +200,19 @@
         </table>
 
         <div class="bottom-row">
-            <form th:action="@{/dataRegistration/bookings/{id}/approve(id=${leaseContract.leasingContractId})}"
+
+            <form th:action="@{/dataRegistration/bookings/{id}/reject(id=${booking.leasingContractId})}"
+                  method="post"
+                  onsubmit="return confirm('Er du sikker på, at du vil afvise denne booking?');">
+                <button type="submit" class="box-button danger">Afvis booking</button>
+            </form>
+
+            <form th:action="@{/dataRegistration/bookings/{id}/approve(id=${booking.leasingContractId})}"
                   method="post">
                 <button type="submit" class="box-button">Godkend lejekontrakt</button>
             </form>
+
+
         </div>
 
     </div>

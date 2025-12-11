@@ -64,6 +64,11 @@ public class BookingService {
         return leaseContractRepo.approveLeaseContractByIdAndUpdateCarStatus(leasingContractId);
     }
 
+    // AFVIS / SLET BOOKING
+    public boolean rejectBooking(int leasingContractId) {
+        return leaseContractRepo.deleteBookingById(leasingContractId);
+    }
+
 
 
 }
