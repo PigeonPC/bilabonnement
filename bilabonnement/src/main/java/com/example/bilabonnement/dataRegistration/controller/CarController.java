@@ -25,6 +25,7 @@ public class CarController {
 
 
     // =============================================== BILER ===============================================
+
     // VIS LISTE OVER BILER FRA CARS TABELLEN:
     @GetMapping("/dataRegistration/cars")
     public String showAllCars(Model model) {

@@ -22,6 +22,7 @@ public class PreSaleController {
     }
 
     // =============================================== KØBSAFTALER ===============================================
+
     // VIS TABEL/LISTE OVER KØBSAFTALER:
     @GetMapping("/dataRegistration/preSales")
     public String showPreSaleTable(Model model) {

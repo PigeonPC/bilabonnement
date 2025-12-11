@@ -22,6 +22,7 @@ public class LeaseContractController {
     }
 
     // =============================================== LEJEKONTRAKT  ===============================================
+
     // VIS TABEL/LISTE OVER LEJEKONTRAKTER:
     @GetMapping("/dataRegistration/leaseContracts")
     public String showLeaseContractTable(Model model) {

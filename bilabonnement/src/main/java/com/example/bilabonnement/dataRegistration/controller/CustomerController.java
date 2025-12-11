@@ -17,6 +17,8 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    // =============================================== KUNDER ===============================================
+
     //Vis liste over kunder
     @GetMapping("/dataRegistration/customer")
     public String showAllCustomers(Model model) {

@@ -24,6 +24,7 @@ public class BookingController {
     }
 
     // =============================================== BOOKINGER ===============================================
+
     // VIS TABEL/LISTE OVER BOOKINGER:
     @GetMapping("/dataRegistration/bookings")
     public String showBookingsTable(Model model) {
