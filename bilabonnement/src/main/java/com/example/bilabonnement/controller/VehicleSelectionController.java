@@ -4,7 +4,7 @@ import com.example.bilabonnement.dataRegistration.CarStatus;
 import com.example.bilabonnement.dataRegistration.model.Car;
 import com.example.bilabonnement.dataRegistration.repository.CarRepo;
 import com.example.bilabonnement.dataRegistration.repository.LeaseContractRepo;
-import com.example.bilabonnement.dataRegistration.repository.StatusHistoryRepository;
+import com.example.bilabonnement.dataRegistration.repository.StatusHistoryRepo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -19,11 +19,11 @@ public class VehicleSelectionController {
 
     private final CarRepo carRepo;
     private final LeaseContractRepo leaseRepo;
-    private final StatusHistoryRepository statusRepo; // 👈 NYT
+    private final StatusHistoryRepo statusRepo;
 
     public VehicleSelectionController(CarRepo carRepo,
                                       LeaseContractRepo leaseRepo,
-                                      StatusHistoryRepository statusRepo) {
+                                      StatusHistoryRepo statusRepo) {
         this.carRepo = carRepo;
         this.leaseRepo = leaseRepo;
         this.statusRepo = statusRepo;
