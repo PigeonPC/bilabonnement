@@ -12,10 +12,13 @@
 </head>
 <body>
 
+<span class="logo">
+    <img th:src="@{'images/bilabonnementLogo.svg'}"
+         class="logo-image">
+</span>
+
 <!-- Header som fragment -->
 <div th:replace="fragments/headerFragment :: header"></div>
-
-<div class="line"></div>
 
 <!-- Overskrift -->
 <span class="title-row">

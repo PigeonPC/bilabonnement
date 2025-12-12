@@ -1,7 +1,7 @@
 /** CSS for seachbar og grafik med bilens sates */
 
 /* centrer og skaler grafik pænt */
-.search-area { display: grid; gap: 12px; }
+.search-area { display: grid;}
 
 .status-graphic {
     display: flex;

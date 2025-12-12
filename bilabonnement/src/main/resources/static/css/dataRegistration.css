@@ -42,11 +42,11 @@
 .bottom-row button {
     font-size: 17px;
     margin: 7px;
-    background-color: rgba(0, 171, 55, 0.89);
+    background-color: #00BA5E;
 }
 /* Farlig RØD slet-knap */
 .box-button.danger {
-    background-color: #d90000;
+    background-color: #D34934;
 }
 
 /* Success / Error beskeder der vises efter godkendt/afvist booking */

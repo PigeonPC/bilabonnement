@@ -46,7 +46,6 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 25px;
 }
 
 .search-box {
@@ -131,9 +130,15 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
-}
-.title-row h1 {
-    margin-top: 0;
+    margin: 10px 0 10px;
 }
 
+.logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+.logo-image {
+    width: 15%;
+}

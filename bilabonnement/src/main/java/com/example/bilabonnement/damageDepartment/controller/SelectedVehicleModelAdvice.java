@@ -1,4 +1,4 @@
-package com.example.bilabonnement.controller;
+package com.example.bilabonnement.damageDepartment.controller;
 
 import com.example.bilabonnement.dataRegistration.model.Car;
 import com.example.bilabonnement.dataRegistration.repository.CarRepo;

@@ -9,21 +9,25 @@
 </head>
 <body>
 
+<!-- Logo -->
+<span class="logo">
+    <img th:src="@{'images/bilabonnementLogo.svg'}"
+         class="logo-image">
+</span>
+
 <!-- Header -->
 <div th:replace="~{fragments/headerFragment :: header}"></div>
+
+<!-- Overskrift -->
+<span class="title-row">
+    <h1>Skade/Udbedring</h1>
+</span>
 
 <!-- Søgebar + statusbillede -->
 <div class="search-area">
     <div th:replace="~{fragments/searchBarFragment :: searchBar(selectedVehicleId=${session.selectedVehicleId})}"></div>
     <div th:replace="~{fragments/statusGraphicFragment :: statusGraphic(statusImage=${session.statusImage})}"></div>
 </div>
-
-<div class="line"></div>
-
-<!-- Overskrift -->
-<span class="title-row">
-    <h1>Skade/Udbedring</h1>
-</span>
 
 <!-- DINE BOKSE -->
 <div class="wrapper">
