@@ -58,33 +58,6 @@ public class LeaseContract{
 
     }
 
-
-    // VALGFRI konstruktør
-    public LeaseContract(String leasingContractTerms,
-                         Date leaseContractDate,
-                         Date startDate,
-                         Date endDate,
-                         double rentalPrice,
-                         SubscriptionType subscription,
-                         Date approvedDate,
-                         Date depositPayedDate,
-                         Date fullAmountPayedDate,
-                         int renterId,
-                         int vehicleId) {
-
-        this.leasingContractTerms = leasingContractTerms;
-        this.leaseContractDate = leaseContractDate;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.rentalPrice = rentalPrice;
-        this.subscription = subscription;
-        this.approvedDate = approvedDate;
-        this.depositPayedDate = depositPayedDate;
-        this.fullAmountPayedDate = fullAmountPayedDate;
-        this.renterId = renterId;
-        this.vehicleId = vehicleId;
-    }
-
     // GETTERS & SETTERS
 
     public int getLeasingContractId() {
