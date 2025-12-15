@@ -19,7 +19,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            CustomSuccessHandler successHandler) throws Exception {
 
-        /* Den udkommenterede del skal tilbage når login skal aktiveres!:
+        // Hvis login fjernes, udkommenteres dette:
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/css/**").permitAll()
@@ -32,11 +32,11 @@ public class SecurityConfig {
                 .logout(logout -> logout.logoutSuccessUrl("/login"));
 
         return http.build();
-        */
 
 
 
-        //Denne del fjernes når login skal virke igen:
+
+        /*Hvis login skal fjernes, sættes dette ind:
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .logout(logout -> logout.disable());
 
         return http.build();
-        //fjern hertil
+        */
 
     }
 
