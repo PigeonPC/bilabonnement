@@ -26,7 +26,11 @@ jobs:
 
       - name: Build with Maven
         working-directory: bilabonnement
-        run: mvn -B clean package -DskipTests
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://${{secrets.PROD_DATABASE_URL}}/bilabonnement_db
+          SPRING_DATASOURCE_USERNAME: ${{secrets.PROD_DATABASE_USERNAME}}
+          SPRING_DATASOURCE_PASSWORD: ${{secrets.PROD_DATABASE_PASSWORD}}
+        run: mvn clean install -DskipTests
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -61,6 +65,7 @@ jobs:
           app-name: 'bilabonnement2'
           slot-name: 'Production'
           package: '*.jar'
+
 
 
 
