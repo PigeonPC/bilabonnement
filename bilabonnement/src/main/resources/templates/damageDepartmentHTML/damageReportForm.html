@@ -14,10 +14,12 @@
 <!-- Header -->
 <div th:replace="~{fragments/headerFragment :: header}"></div>
 
-<!-- Søgebar + statusgrafik -->
+
+
+<!-- Søgebar + statusbillede -->
 <div class="search-area">
-    <div th:replace="~{fragments/searchBarFragment :: searchBar(selectedVehicleId=${selectedVehicleId})}"></div>
-    <div th:replace="~{fragments/statusGraphicFragment :: statusGraphic(statusImage=${statusImage})}"></div>
+    <div th:replace="~{fragments/searchBarFragment :: searchBar(selectedVehicleId=${session.selectedVehicleId})}"></div>
+    <div th:replace="~{fragments/statusGraphicFragment :: statusGraphic(statusImage=${session.statusImage})}"></div>
 </div>
 
 <div class="page-wrapper">
