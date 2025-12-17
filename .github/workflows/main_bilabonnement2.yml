@@ -1,0 +1,71 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy JAR app to Azure Web App - bilabonnement2
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java version
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: Build with Maven
+        working-directory: bilabonnement
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://${{secrets.PROD_DATABASE_URL}}/bilabonnement_db
+          SPRING_DATASOURCE_USERNAME: ${{secrets.PROD_DATABASE_USERNAME}}
+          SPRING_DATASOURCE_PASSWORD: ${{secrets.PROD_DATABASE_PASSWORD}}
+        run: mvn clean install -DskipTests
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/bilabonnement/target/*.jar'
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: java-app
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B0C12A73C36F466585D9B0057C51E5E8 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5E5E2C87EBBA46D6B3AA98A15047BFAA }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8973FAAB027D41CC951D267CCE419B9B }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'bilabonnement2'
+          slot-name: 'Production'
+          package: '*.jar'
+
+
+
+
