@@ -20,6 +20,7 @@ public class DamageReportRepository {
     }
 
 
+
 //Seneste rapport-ID for et lease, som HAR mindst ét item.
 
     public Integer findLatestWithItemsIdByLeaseId(Integer leaseId) {
@@ -32,6 +33,7 @@ public class DamageReportRepository {
                 Integer.class
         ).setParameter("leaseId", leaseId).getSingleResult();
     }
+
 
 
 //Seneste rapport-ID for et lease (kan være tom).
@@ -47,6 +49,7 @@ public class DamageReportRepository {
     }
 
 
+
 //Hent én rapport + dens items (fetch join).
 
     public DamageReport findWithItemsById(Integer id) {
@@ -60,7 +63,9 @@ public class DamageReportRepository {
         return list.isEmpty() ? null : list.get(0);
     }
 
+
 //Vi opdaterer rapporten
+
     public DamageReport save(DamageReport report) {
         if (report.getDamageReportId() == null) {
             entityManager.persist(report);     // NY → får id
@@ -70,8 +75,4 @@ public class DamageReportRepository {
         }
     }
 
-    public void delete(Integer id) {
-        DamageReport r = findById(id);
-        if (r != null) entityManager.remove(r);
-    }
 }

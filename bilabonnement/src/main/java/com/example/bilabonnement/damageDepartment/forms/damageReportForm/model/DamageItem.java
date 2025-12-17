@@ -19,13 +19,13 @@ public class DamageItem {
     private BigDecimal damageItemPrice;
 
 
-    // Child → Parent (kræver at parent er managed)
+// Child → Parent (kræver at parent er managed)
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "damage_report_id", nullable = false)
     private DamageReport damageReport;
 
-    /** Formular-flag: hvis sat af brugeren, skal rækken slettes ved gem. */
+// Formular-flag: hvis sat af brugeren, skal rækken slettes ved gem.
     @Transient
     private Boolean markedForDelete;
 

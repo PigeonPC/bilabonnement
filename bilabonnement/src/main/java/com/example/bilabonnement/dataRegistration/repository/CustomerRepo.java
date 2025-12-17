@@ -19,6 +19,7 @@ public class CustomerRepo {
         this.template = template;
     }
 
+
     public Optional<Customer> findById(int customerId) {
         String sql = "SELECT * FROM customers WHERE customer_id = ?";
 

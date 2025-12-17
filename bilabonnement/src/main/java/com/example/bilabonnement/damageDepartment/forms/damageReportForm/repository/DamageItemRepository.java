@@ -16,16 +16,6 @@ public class DamageItemRepository {
     private EntityManager em;
 
 
-// Finder damage_Items ved at indtaste et report_ID
-
-    public List<DamageItem> findByReportId(Integer reportId) {
-        return em.createQuery(
-                "select di from DamageItem di " +
-                        "where di.damageReport.damageReportId = :rid " +
-                        "order by di.damageItemId",
-                DamageItem.class
-        ).setParameter("rid", reportId).getResultList();
-    }
 
 // sletter damage_items ved at indtaste et report_id
 

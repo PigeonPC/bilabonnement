@@ -48,16 +48,17 @@ public class LeaseContractRepo {
         return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
     }
 
-    /**
-     * Simpelt JPA-opslag (ikke brugt i UI-flowet, men ok at have).
-     */
+
+// JPA metode.
+
     public LeaseContract findById(Long id) {
         return entityManager.find(LeaseContract.class, id.intValue());
     }
 
 
-    // Godkend BOOKING ud fra leasing_contract_id = sæt approved_date fra NULL til NOW()
-    // og sæt bilens status til RENTED
+// Godkend BOOKING ud fra leasing_contract_id = sæt approved_date fra NULL til NOW()
+// og sæt bilens status til RENTED
+
     public boolean approveLeaseContractByIdAndUpdateCarStatus(int leasingContractId) {
 
         // 1) Sæt approved_date, men kun hvis den var NULL
@@ -70,12 +71,14 @@ public class LeaseContractRepo {
 
         int rows = template.update(updateSql, leasingContractId);
 
-        // Hvis ingen rækker blev opdateret, så var den måske allerede godkendt
+
+// Hvis ingen rækker blev opdateret, så var den måske allerede godkendt
         if (rows == 0) {
             return false;
         }
 
-        // 2) Indsæt ny status-historik for bilen: RENTED
+
+// 2) Indsæt ny status-historik for bilen: RENTED
         String insertStatusSql = """
                 INSERT INTO status_histories (vehicle_id, status, timestamp)
                 SELECT vehicle_id, 'RENTED', NOW()
@@ -88,7 +91,9 @@ public class LeaseContractRepo {
         return true;
     }
 
-    // AFVIS / SLET BOOKING (kun hvis den ikke er godkendt)
+
+// AFVIS / SLET BOOKING (kun hvis den ikke er godkendt)
+
     public boolean deleteBookingById(int leasingContractId) {
         String sql = """
             DELETE FROM lease_contracts
@@ -101,7 +106,8 @@ public class LeaseContractRepo {
     }
 
 
-    //VIS TABEL MED BOOKINGER plus lidt om customer og bil
+//VIS TABEL MED BOOKINGER plus lidt om customer og bil
+
     public List<BookingTableView> fetchAllBookingsWithRenterNameAndCarModel() {
         String sql = """
                 SELECT
@@ -124,7 +130,8 @@ public class LeaseContractRepo {
     }
 
 
-    //VIS TABEL MED LEJEKONTRAKTER plus lidt om customer og bil
+//VIS TABEL MED LEJEKONTRAKTER plus lidt om customer og bil
+
     public List<LeaseContractTableView> fetchAllLeaseContractsWithRenterNameAndCarModel() {
         String sql = """
             SELECT
@@ -171,7 +178,9 @@ public class LeaseContractRepo {
         }
     }
 
-    // Hent én lease robust – bemærk UPPER(subscription) AS subscription
+
+// Hent én lease robust – bemærk UPPER(subscription) AS subscription
+
     public Optional<LeaseContract> findOptionalByLeaseId(int leaseId) {
         String sql = """
                     SELECT
@@ -194,9 +203,9 @@ public class LeaseContractRepo {
     }
 
 
-    /**
-     * Hurtigt existence-check (COUNT(*)) – kan bruges i UI til at styre visning.
-     */
+
+//Hurtigt existence-check (COUNT(*)) – kan bruges i UI til at styre visning.
+
     public boolean existsByVehicleId(int vehicleId) {
         String sql = "SELECT COUNT(*) FROM lease_contracts WHERE vehicle_id = ?";
         Integer count = template.queryForObject(sql, Integer.class, vehicleId);

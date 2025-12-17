@@ -45,42 +45,48 @@ public class DamageReportController {
 
     /* -------------------------- VIEW (kun læse) -------------------------- */
 
-    /** Viser KUN eksisterende rapport. Opretter aldrig i /view. */
+
+//Viser KUN eksisterende rapport. Opretter aldrig i /view.
+
     @GetMapping("/view")
     public String viewDamageReport(@RequestParam(name="vehicleId", required=false) String vehicleIdStr,
                                    Model model) {
 
-        // Parse request-param til Integer på en sikker måde (null ved tom/ugyldig)
+// Parse request-param til Integer på en sikker måde (null ved tom/ugyldig)
         Integer vehicleId = parseIntOrNull(vehicleIdStr);
 
-        // 1) Find leaseId robust ud fra vehicleId (Optional -> null hvis ingen fundet).
-        //    Vi bruger en helper i repo'et, så vi undgår exceptions ved 0 rækker.
+// 1) Find leaseId robust ud fra vehicleId (Optional -> null hvis ingen fundet).
+//    Vi bruger en helper i repo'et, så vi undgår exceptions ved 0 rækker.
+
         Integer leaseId = (vehicleId == null)
                 ? null
                 : leaseContractRepo.findLeaseIdByVehicleId(vehicleId).orElse(null);
 
-        // 2) Forbered et DamageReport-objekt UANSET hvad, så Thymeleaf altid har noget at binde til.
+// 2) Forbered et DamageReport-objekt UANSET hvad, så Thymeleaf altid har noget at binde til.
         DamageReport report;
 
         if (leaseId == null) {
             // Ingen lease til denne bil → vis stabil, tom rapport
             // (så formularen kan renderes, men med “Ingen data”-signaler)
             report = new DamageReport();
-            report.setLateReturn(false);           // default
-            report.setPaidStatus(false);           // default
+            report.setLateReturn(false);
+            report.setPaidStatus(false);
             report.setDamageItems(new ArrayList<>());
-            ensureOneBlankRow(report);             // giv bruger et tomt felt at skrive i
+            // giv bruger et tomt felt at skrive i
+            ensureOneBlankRow(report);
 
             // Læg simple flags/info i modellen til visning i view’et
             model.addAttribute("vehicleId", vehicleId);
-            model.addAttribute("noLeaseForVehicle", vehicleId != null); // “bilen findes, men ingen lease”
-            model.addAttribute("noReport", true);                       // “ingen rapport at vise”
+            model.addAttribute("noLeaseForVehicle", vehicleId != null);
+            // “bilen findes, men ingen lease”
+            model.addAttribute("noReport", true);
+            // “ingen rapport at vise”
 
             model.addAttribute("damageReport", report);
             return "damageDepartmentHTML/damageReportForm";
         }
 
-        // 3) Vi har en lease → forsøg at hente eksisterende rapport inkl. items
+// 3) Vi har en lease → forsøg at hente eksisterende rapport inkl. items
         report = damageReportService.findByLeaseIdWithItems(leaseId);
 
         if (report == null) {
@@ -105,8 +111,8 @@ public class DamageReportController {
             damageReportService.recalc(report);
         }
 
-        // 4) Når vi har leaseId, lægger vi altid lease-/bil-info i modellen
-        //    (vehicleId, renterId, drivenKm, extraKmPrice, mv.)
+// 4) Når vi har leaseId, lægger vi altid lease-/bil-info i modellen
+//    (vehicleId, renterId, drivenKm, extraKmPrice, mv.)
         loadLeaseInfo(leaseId, model, report.getTotalKm());
 
         // Brugervenlighed: behold også vehicleId og leaseId som flade felter i modellen
@@ -123,7 +129,9 @@ public class DamageReportController {
 
     /* -------------------------- NEW (kun oprette) -------------------------- */
 
-    /** Opretter NY rapport for bilens lease (kun hvis ingen rapport findes). */
+
+//Opretter NY rapport for bilens lease (kun hvis ingen rapport findes)
+
     @GetMapping("/new")
     public String newDamageReport(@RequestParam(name = "vehicleId", required = false) String vehicleIdStr,
                                   Model model) {
@@ -149,7 +157,7 @@ public class DamageReportController {
             return "damageDepartmentHTML/damageReportForm";
         }
 
-        // Hvis rapport allerede findes → vis den i stedet
+        // Hvis rapport allerede findes → vis den
         DamageReport existing = damageReportService.findByLeaseIdWithItems(leaseId);
         if (existing != null) {
             return "redirect:/damageReportForm/view?vehicleId=" + vehicleId;
@@ -175,7 +183,7 @@ public class DamageReportController {
 
     /* -------------------------- SAVE -------------------------- */
 
-    /** Gemmer rapporten og redirecter tilbage til /view for samme vehicleId. */
+//Gemmer rapporten og redirecter tilbage til /view for samme vehicleId.
     @PostMapping("/save")
     public String saveDamageReport(@ModelAttribute DamageReport damageReport,
                                    @RequestParam(name="deleteIds", required=false) List<Integer> deleteIds,
@@ -213,13 +221,14 @@ public class DamageReportController {
 
         // Håndter slet-markeringer (hvis de findes i formen)
         if (damageReport.getDamageItems() != null) {
-            // 1) Fjern eksisterende items markeret til sletning (via id)
+
+// 1) Fjern eksisterende items markeret til sletning (via id)
             if (deleteIds != null && !deleteIds.isEmpty()) {
                 damageReport.getDamageItems().removeIf(it ->
                         it.getDamageItemId() != null && deleteIds.contains(it.getDamageItemId()));
             }
 
-            // 2) Fjern nye (id==null) markeret via indeks
+// 2) Fjern nye (id==null) markeret via indeks
             if (deleteNewIndexes != null && !deleteNewIndexes.isEmpty()) {
                 // Fjern fra højeste indeks for at undgå re-indeksering undervejs
                 deleteNewIndexes.stream()
@@ -234,7 +243,7 @@ public class DamageReportController {
                         });
             }
 
-            // 3) Filtrér tomme rækker fra (ingen id, ingen beskrivelse, ingen pris)
+// 3) Filtrér tomme rækker fra (ingen id, ingen beskrivelse, ingen pris)
             damageReport.setDamageItems(
                     damageReport.getDamageItems().stream()
                             .filter(it -> {
@@ -255,8 +264,10 @@ public class DamageReportController {
                 leaseContractRepo.findOptionalByLeaseId(leaseId)
                         .ifPresent(lc -> model.addAttribute("vehicleId", lc.getVehicleId()));
             }
-            damageReportService.recalc(damageReport); // tager også højde for lateReturn
-            ensureOneBlankRow(damageReport);          // så brugeren stadig har en tom række at udfylde
+            damageReportService.recalc(damageReport);
+            // tager også højde for lateReturn
+            ensureOneBlankRow(damageReport);
+            // så brugeren stadig har en tom række at udfylde
             model.addAttribute("damageReport", damageReport);
             return "damageDepartmentHTML/damageReportForm";
         }
@@ -282,7 +293,7 @@ public class DamageReportController {
 
     /* -------------------------- Hjælpere -------------------------- */
 
-    /** Lægger leasing- og bil-info i modellen og beregner felter til visning. */
+// Lægger leasing- og bil-info i modellen og beregner felter til visning.
     private void loadLeaseInfo(Integer leaseId, Model model, Integer totalKmInput) {
         LeaseContract lease = leaseContractRepo.findOptionalByLeaseId(leaseId).orElse(null);
         if (lease == null) return;
@@ -300,7 +311,9 @@ public class DamageReportController {
         model.addAttribute("extraKmPrice", extraKmPrice);
     }
 
-    /** Giv altid brugeren én tom skaderække at skrive i (kun i view-modellen, ikke DB). */
+
+// Giv altid brugeren én tom skaderække at skrive i (kun i view-modellen, ikke DB).
+
     private void ensureOneBlankRow(DamageReport report) {
         if (report.getDamageItems() == null) {
             report.setDamageItems(new ArrayList<>());
@@ -318,14 +331,17 @@ public class DamageReportController {
         }
     }
 
-    /** Parse Integer fra String; returnér null ved tom/ugyldig værdi. */
+
+// Parse Integer fra String; returnér null ved tom/ugyldig værdi.
+
     private Integer parseIntOrNull(String s) {
         if (s == null || s.isBlank()) return null;
         try { return Integer.valueOf(s.trim()); }
         catch (NumberFormatException e) { return null; }
     }
 
-    /** Tilbage til oversigten (bevarer din rute). */
+// Tilbage til oversigten (bevarer din rute).
+
     @GetMapping
     public String overview(Model model) {
         return "damageDepartmentHTML/damageDepartment";

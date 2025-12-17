@@ -33,10 +33,10 @@ public class StatusHistoryRepo {
         return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
     }
 
-    /**
-     * Hent SENESTE status for en bil (vehicle_id) ud fra timestamp.
-     * Returnerer Optional.empty() hvis der ikke findes historik.
-     */
+
+// Hent SENESTE status for en bil (vehicle_id) ud fra timestamp.
+// Returnerer Optional.empty() hvis der ikke findes historik.
+
     public Optional<CarStatus> findLatestStatusForVehicle(int vehicleId) {
         String sql = """
             SELECT status
@@ -53,24 +53,5 @@ public class StatusHistoryRepo {
         }
     }
 
-    /**
-     * Tæl biler hvor DEN NYESTE status (maks timestamp pr. bil) er = status.
-     * Brugbar til dashboards/KPI’er.
-     */
-
-    public int countByLatestStatus(CarStatus status) {
-        String sql = """
-            SELECT COUNT(*) 
-            FROM status_histories sh
-            WHERE sh.timestamp = (
-                SELECT MAX(sh2.timestamp)
-                FROM status_histories sh2
-                WHERE sh2.vehicle_id = sh.vehicle_id
-            )
-            AND sh.status = ?
-        """;
-        Integer n = template.queryForObject(sql, Integer.class, status.name());
-        return n != null ? n : 0;
-    }
 
 }

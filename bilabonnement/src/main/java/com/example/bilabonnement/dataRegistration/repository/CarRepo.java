@@ -1,14 +1,9 @@
 package com.example.bilabonnement.dataRegistration.repository;
 
-/**
- * CarRepo (klasse-baseret JPA repository)
- * Simpelt repository for Car-entity med EntityManager (findById, findAll, mv.).
 
- Er et kombineret repository:
- Med JPA-metoder til Car-enity (findById, findAll, save, delete)
- Med JDBC-metoder til CarView (listevisning, detaljer, status, leaseContractId, approvedDate)
+// Er et kombineret repository:
+// klasse baseret på JPA- og JDBC-metoder til CarView (listevisning, detaljer, status, leaseContractId, approvedDate)
 
- */
 
 import com.example.bilabonnement.dataRegistration.model.Car;
 import com.example.bilabonnement.dataRegistration.model.view.CarView;
@@ -19,7 +14,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,63 +21,30 @@ import java.util.Optional;
 @Repository
 public class CarRepo {
 
-    //JPA:
+//JPA:
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    //JDBC:
+//JDBC:
 
     @Autowired
     private JdbcTemplate template;
 
 
 
-    //JPA-metoder:
+//------- JPA-metoder --------
 
-// Optional er en form for beholder som kan indeholde data eller i dette
-// tilfælde være tom (null).
     public Optional<Car> findById(Integer id) {
         return Optional.ofNullable(entityManager.find(Car.class, id));
     }
 
-    public List<Car> findAll() {
-        return entityManager.createQuery("SELECT c FROM Car c", Car.class).getResultList();
-    }
-
-    public Optional<Car> findByChassisNumber(String chassisNumber) {
-        var list = entityManager.createQuery(
-                        "SELECT c FROM Car c WHERE c.chassisNumber = :cn", Car.class)
-                .setParameter("cn", chassisNumber)
-                .setMaxResults(1)
-                .getResultList();
-        return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
-    }
-
-    public boolean existsById(Integer id) {
-        return findById(id).isPresent();
-    }
-
-    @Transactional
-    public Car save(Car car) {
-        if (car.getVehicleId() == null) {
-            entityManager.persist(car);
-            return car;
-        } else {
-            return entityManager.merge(car);
-        }
-    }
-
-    @Transactional
-    public void deleteById(Integer id) {
-        Car ref = entityManager.find(Car.class, id);
-        if (ref != null) entityManager.remove(ref);
-    }
 
 
-    //JDBC-metoder:
+//------ JDBC-metoder --------
 
-    //Hent alle biler fra cars-tabellen:
+//Hent alle biler fra cars-tabellen:
+
     public List<CarView> fetchAllCars(){
 
         String sql = """
@@ -108,7 +69,8 @@ public class CarRepo {
     }
 
 
-    //Hent alle biler ud fra status:
+//Hent alle biler ud fra status:
+
     public List<CarView> fetchCarsByStatus(String status){
         String sql = """
                 SELECT
@@ -134,7 +96,8 @@ public class CarRepo {
         return template.query(sql, rowMapper, status);
     }
 
-    //Vis detaljer om en bil ud fra bilens id:
+//Vis detaljer om en bil ud fra bilens id:
+
     public CarView fetchCarById(int vehicleId){
         String sql = """
                 SELECT
@@ -171,7 +134,9 @@ public class CarRepo {
         return template.queryForObject(sql, rowMapper, vehicleId);
     }
 
-    //Ændre (tilføj) status for en bil i status_histories:
+
+//Ændre (tilføj) status for en bil i status_histories:
+
     public boolean insertStatusHistory(int vehicleId, String status){
         String sql = """
                 INSERT INTO status_histories (vehicle_id, status, timestamp)

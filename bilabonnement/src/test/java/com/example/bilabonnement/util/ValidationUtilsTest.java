@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ValidationUtilTest {
 
-    // ---------- isNullOrNonNegativeIntegerWithMaxDigits ----------
+// ---------- isNullOrNonNegativeIntegerWithMaxDigits ----------
 
     @Test
     void returnsTrueWhenIntegerIsNull() {
@@ -30,7 +30,7 @@ class ValidationUtilTest {
         assertFalse(ValidationUtil.isNullOrNonNegativeIntegerWithMaxDigits(1234, 3)); // 4 cifre, max 3
     }
 
-    // ---------- isNonNegativeWithMaxDigits (BigDecimal) ----------
+// ---------- isNonNegativeWithMaxDigits (BigDecimal) ----------
 
     @Test
     void returnsTrueWhenBigDecimalIsNull() {
