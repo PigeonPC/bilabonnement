@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS customers
     last_name      VARCHAR(50),
     phone          VARCHAR(20),
     license_number VARCHAR(11),
-    email          VARCHAR(200) UNIQUE ,
+    email          VARCHAR(200) UNIQUE,
     address        VARCHAR(200),
     zip            INT,
     floor          VARCHAR(5),
@@ -168,7 +168,7 @@ VALUES ('CAR001', 'Audi', 'A3', 'BASE', 155000, 72000, 115, 23000, 'LC-A3-25', '
        ('CAR012', 'Ford', 'Focus', 'SPORT', 175000, 70000, 125, 27000, 'LC-FOC-26', 'IRK-L1', '2026-01-05', 249000);
 ;
 
-/* ---------------- CUSTOMER (8 kunder – ingen datoer) ---------------- */
+/* ---------------- CUSTOMER ---------------- */
 
 INSERT INTO customers (first_name, last_name, phone, license_number,
                        email, address, zip, floor, country)
@@ -187,7 +187,7 @@ VALUES ('Lars', 'Jensen', '11111111', 'DK1234567', 'lars@mail.com', 'Gade 1', 10
 ;
 
 
-/* ---------------- RENTER (5 renters – dækker creditScore ENUMs) ---------------- */
+/* ---------------- RENTER ---------------- */
 
 INSERT INTO renters (credit_score, ssn, customer_id)
 VALUES ('APPROVED', '010101-1111', 1),
@@ -201,9 +201,8 @@ VALUES ('APPROVED', '010101-1111', 1),
        ('REJECTED', '090909-9999', 10);
 
 
-/* ---------------- LEASECONTRACTS (datoer flyttet til nov/dec 2025+) ---------------- */
 
-/* ---------------- LEASECONTRACTS – konsistente med state machine ---------------- */
+/* ---------------- LEASECONTRACTS ---------------- */
 
 INSERT INTO lease_contracts (leasing_contract_terms, lease_contract_date, start_date, end_date,
                              rental_price, subscription, approved_date, deposit_payed_date,
@@ -246,7 +245,7 @@ VALUES
      '2026-01-10 13:00:00', '2026-01-11 09:00:00', NULL, 9, 12);
 
 
-/* ---------------- DAMAGEREPORTS – nu bundet til RETURNED og før salg ---------------- */
+/* ---------------- DAMAGEREPORTS ---------------- */
 
 INSERT INTO damage_reports (total_price, total_damage_price, report_date, late_return,
                             total_km, has_payed, leasing_contract_id)
@@ -287,9 +286,7 @@ VALUES ('Ridse i dør', 2000, 1),
        ('Polering af karrosseri', 1200, 8);
 
 
-/* ---------------- FINALSALES (datoer flyttet til nov/dec 2025) ---------------- */
-
-/* ---------------- FINALSALES – kun biler med fuld rejse frem til SOLD ---------------- */
+/* ---------------- FINALSALES ---------------- */
 
 INSERT INTO final_sales (first_name, last_name, phone, email, address, zip, floor, country,
                          sale_date, buyer_type, currency, note, final_sale_price, vehicle_id)
@@ -307,11 +304,11 @@ VALUES
      '2025-12-15', 'EXPORT', 'DKK', 'Eksporteret efter endt leasing', 250000.00, 7);
 
 
-/* ---------------- PRE_SALE_AGREEMENTS (datoer flyttet til nov/dec 2025) ---------------- */
+/* ---------------- PRE_SALE_AGREEMENTS ---------------- */
 
 INSERT INTO pre_sale_agreements (limited_period, pre_sale_agreement_date, pickup_location, km_limit,
                                  extra_km_price, pre_sale_agreement_terms, currency, date_of_purchase,
-                                 vehicle_id, pre_sale_agreements.customer_id)
+                                 vehicle_id, customer_id)
 VALUES (TRUE, '2025-11-02', 'Kbh', 15000, 1.5, 'Standard aftale', 'DKK', '2025-11-20', 1, 4),
        (FALSE, '2025-11-08', 'Aarhus', 30000, 2.0, 'Ingen km-begrænsning', 'EUR', '2025-11-25', 2, 5),
        (TRUE, '2025-11-15', 'Odense', 20000, 1.8, 'Erhvervsaftale', 'DKK', '2025-12-01', 3, 6),
@@ -323,7 +320,7 @@ VALUES (TRUE, '2025-11-02', 'Kbh', 15000, 1.5, 'Standard aftale', 'DKK', '2025-1
 
 
 
-/* ---------------- STATUS_HISTORIES – opdateret så alle flows følger state machine ---------------- */
+/* ---------------- STATUS_HISTORIES ---------------- */
 
 INSERT INTO status_histories (vehicle_id, status, timestamp)
 VALUES
