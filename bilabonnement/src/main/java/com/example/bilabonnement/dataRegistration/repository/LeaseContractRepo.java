@@ -49,16 +49,14 @@ public class LeaseContractRepo {
     }
 
 
-// JPA metode.
-
+//JPA metode.
     public LeaseContract findById(Long id) {
         return entityManager.find(LeaseContract.class, id.intValue());
     }
 
 
-// Godkend BOOKING ud fra leasing_contract_id = sæt approved_date fra NULL til NOW()
-// og sæt bilens status til RENTED
-
+//Godkend BOOKING ud fra leasing_contract_id = sæt approved_date fra NULL til NOW()
+//og sæt bilens status til RENTED
     public boolean approveLeaseContractByIdAndUpdateCarStatus(int leasingContractId) {
 
         // 1) Sæt approved_date, men kun hvis den var NULL
@@ -93,7 +91,6 @@ public class LeaseContractRepo {
 
 
 // AFVIS / SLET BOOKING (kun hvis den ikke er godkendt)
-
     public boolean deleteBookingById(int leasingContractId) {
         String sql = """
             DELETE FROM lease_contracts
@@ -107,7 +104,6 @@ public class LeaseContractRepo {
 
 
 //VIS TABEL MED BOOKINGER plus lidt om customer og bil
-
     public List<BookingTableView> fetchAllBookingsWithRenterNameAndCarModel() {
         String sql = """
                 SELECT
@@ -131,7 +127,6 @@ public class LeaseContractRepo {
 
 
 //VIS TABEL MED LEJEKONTRAKTER plus lidt om customer og bil
-
     public List<LeaseContractTableView> fetchAllLeaseContractsWithRenterNameAndCarModel() {
         String sql = """
             SELECT
@@ -159,9 +154,7 @@ public class LeaseContractRepo {
 
 
 
-// ---------- ROBUSTE HJÆLPERE TIL UI-FLOWET ----------
-
-    // Hent seneste lease_id for et vehicle (uændret – returnerer kun tal)
+    //Rasmus
     public Optional<Integer> findLeaseIdByVehicleId(int vehicleId) {
         String sql = """
                     SELECT leasing_contract_id
@@ -178,9 +171,7 @@ public class LeaseContractRepo {
         }
     }
 
-
-// Hent én lease robust – bemærk UPPER(subscription) AS subscription
-
+    //Rasmus
     public Optional<LeaseContract> findOptionalByLeaseId(int leaseId) {
         String sql = """
                     SELECT
@@ -203,9 +194,7 @@ public class LeaseContractRepo {
     }
 
 
-
-//Hurtigt existence-check (COUNT(*)) – kan bruges i UI til at styre visning.
-
+    //Rasmus
     public boolean existsByVehicleId(int vehicleId) {
         String sql = "SELECT COUNT(*) FROM lease_contracts WHERE vehicle_id = ?";
         Integer count = template.queryForObject(sql, Integer.class, vehicleId);

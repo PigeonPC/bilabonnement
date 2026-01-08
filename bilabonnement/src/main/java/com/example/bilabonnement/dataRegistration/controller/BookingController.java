@@ -76,7 +76,8 @@ public class BookingController {
         boolean deleted = bookingService.rejectBooking(id);
 
         if (deleted) {
-            ra.addFlashAttribute("message", "Booking #" + id + " er blevet afvist og slettet");
+            ra.addFlashAttribute("message", "Booking #" + id
+                    + " er blevet afvist og slettet");
         } else {
             ra.addFlashAttribute("error", "Fejl: Kunne ikke afvise booking");
         }
