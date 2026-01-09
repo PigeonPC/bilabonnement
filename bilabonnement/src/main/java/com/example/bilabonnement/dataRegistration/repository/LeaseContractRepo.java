@@ -59,24 +59,21 @@ public class LeaseContractRepo {
 //og sæt bilens status til RENTED
     public boolean approveLeaseContractByIdAndUpdateCarStatus(int leasingContractId) {
 
-        // 1) Sæt approved_date, men kun hvis den var NULL
+        //1) Sæt approved_date, men kun hvis den var NULL
         String updateSql = """
                 UPDATE lease_contracts
                 SET approved_date = NOW()
                 WHERE leasing_contract_id = ?
                   AND approved_date IS NULL
                 """;
-
         int rows = template.update(updateSql, leasingContractId);
 
-
-// Hvis ingen rækker blev opdateret, så var den måske allerede godkendt
+        //Hvis ingen rækker blev opdateret
         if (rows == 0) {
             return false;
         }
 
-
-// 2) Indsæt ny status-historik for bilen: RENTED
+        //2) Indsæt ny status-historik for bilen: RENTED
         String insertStatusSql = """
                 INSERT INTO status_histories (vehicle_id, status, timestamp)
                 SELECT vehicle_id, 'RENTED', NOW()
@@ -85,12 +82,11 @@ public class LeaseContractRepo {
                 """;
 
         template.update(insertStatusSql, leasingContractId);
-
         return true;
     }
 
 
-// AFVIS / SLET BOOKING (kun hvis den ikke er godkendt)
+//AFVIS / SLET BOOKING (kun hvis den ikke er godkendt)
     public boolean deleteBookingById(int leasingContractId) {
         String sql = """
             DELETE FROM lease_contracts
@@ -99,7 +95,7 @@ public class LeaseContractRepo {
             """;
 
         int rows = template.update(sql, leasingContractId);
-        return rows > 0;   // true hvis noget blev slettet
+        return rows > 0;   //true hvis noget blev slettet
     }
 
 

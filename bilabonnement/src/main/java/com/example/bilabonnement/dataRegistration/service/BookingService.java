@@ -50,7 +50,7 @@ public class BookingService {
 
     public StatusHistory getLatestStatusForLease(LeaseContract leaseContract) {
         return statusHistoryRepo.findLatestByVehicleId(leaseContract.getVehicleId())
-                .orElse(null); // ligesom ved PreSale – må godt være null
+                .orElse(null);
     }
 
 
@@ -64,7 +64,7 @@ public class BookingService {
         return leaseContractRepo.approveLeaseContractByIdAndUpdateCarStatus(leasingContractId);
     }
 
-    // AFVIS / SLET BOOKING
+    //AFVIS / SLET BOOKING
     public boolean rejectBooking(int leasingContractId) {
         return leaseContractRepo.deleteBookingById(leasingContractId);
     }
